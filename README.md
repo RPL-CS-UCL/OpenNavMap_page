@@ -1,1 +1,1 @@
-# LiteVLoc webpage
+# OpenNavMap Project Webpage
