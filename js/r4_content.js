@@ -95,3 +95,32 @@
     sync();
   }
 })();
+
+// Download button at the bottom-right corner of every video (shown once the video is known to be loadable).
+(() => {
+  if (new URLSearchParams(location.search).get("capture")) return;
+  const ICON = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg>';
+  document.querySelectorAll("video").forEach((v, i) => {
+    const a = document.createElement("a");
+    a.className = "vdl";
+    a.innerHTML = ICON;
+    a.title = "Download this video";
+    a.setAttribute("aria-label", "Download this video");
+    a.addEventListener("click", (e) => e.stopPropagation());
+    const place = () => {
+      const host = v.offsetParent;
+      if (!host || v.readyState < 1) { a.hidden = true; return; }
+      if (a.parentNode !== host) host.appendChild(a);
+      const src = v.currentSrc || v.src;
+      a.href = src;
+      a.download = src.startsWith("data:") ? `opennavmap_clip_${i + 1}.mp4` : src.split("/").pop().split("?")[0];
+      a.style.left = `${v.offsetLeft + v.offsetWidth - 42}px`;
+      a.style.top = `${v.offsetTop + v.offsetHeight - 42}px`;
+      a.hidden = false;
+    };
+    v.addEventListener("loadedmetadata", place);
+    window.addEventListener("resize", place);
+    if ("ResizeObserver" in window) new ResizeObserver(place).observe(v);
+    place();
+  });
+})();

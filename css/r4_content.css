@@ -54,3 +54,9 @@ html[data-mode="capture"] .r4-ctl :is(.p08-btn, .p08-track, .p08-time) { visibil
 @media (max-width: 720px) {
   .r4-ctl { gap: 10px; }
 }
+
+/* download button on each video */
+.vdl { position: absolute; z-index: 6; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center;
+  background: rgba(0, 0, 0, .55); color: #fff; opacity: .6; transition: opacity .15s; }
+.vdl:hover, .vdl:focus-visible { opacity: 1; }
+.vdl[hidden] { display: none; }
