@@ -1,562 +1,1143 @@
-<!DOCTYPE html>
-<html>
-
+<!doctype html>
+<html lang="en" data-mode="scroll">
 <head>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-F28Q22D1LS"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
-
-    gtag('config', 'G-F28Q22D1LS');
-  </script>
-  <meta charset="utf-8">
-  <meta name="description"
-    content="LiteVLoc: Map-Lite Visual Localization for Image Goal Navigation">
-  <meta name="keywords" content="Visual Localization, Mapping, Navigation">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>OpenNavMap: Structure-Free Topometric Mapping via Large-Scale Collaborative Localization</title>
-
-  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
-    rel="stylesheet">
-
-  <link rel="stylesheet" href="./static/css/bulma.min.css">
-  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
-  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
-  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
-  <link rel="stylesheet"
-    href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
-  <link rel="stylesheet" href="./static/css/index.css">
-  <link rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-    crossorigin="anonymous">
-
-  <script src="https://www.youtube.com/iframe_api"></script>
-  <script src="./static/js/ajax.googleapis.com_ajax_libs_jquery_3.5.1_jquery.min.js"></script>
-  <script src="./static/js/isInViewport.min.js"></script>
-  <script defer src="./static/js/fontawesome.all.min.js"></script>
-  <script src="./static/js/bulma-carousel.min.js"></script>
-  <script src="./static/js/bulma-slider.min.js"></script>
-  <script src="./static/js/index.js"></script>
-
-  <link rel="icon" href="./favicon.ico?">
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OpenNavMap: Multi-Session Appearance-Based Topometric Mapping for Scalable Visual Navigation</title>
+<meta name="description" content="OpenNavMap: Multi-Session Appearance-Based Topometric Mapping for Scalable Visual Navigation. IEEE Transactions on Robotics (T-RO).">
+<meta property="og:title" content="OpenNavMap: Multi-Session Appearance-Based Topometric Mapping for Scalable Visual Navigation">
+<meta property="og:description" content="IEEE Transactions on Robotics (T-RO). Project page with code and data.">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="css/r4_talk.css">
+<link rel="stylesheet" href="css/r4_merge.css">
+<link rel="stylesheet" href="css/r5_exp_b.css">
+<link rel="stylesheet" href="css/r4_content.css">
+<link rel="stylesheet" href="css/r5_exp_a.css">
+<script src="data/numbers.js"></script>
+<script src="data/merge_r4.js"></script>
+<script src="data/merge_process_r4.js"></script>
+<script src="data/orders_r2.js"></script>
+<script src="data/p03_cloud.js"></script>
+<script src="data/p03_map.js"></script>
+<script src="data/hook_map.js"></script>
+<link rel="stylesheet" href="css/r5.css">
+<link rel="stylesheet" href="css/chapters.css">
 </head>
-
 <body>
 
+<a class="skip" href="#p01">Skip to content</a>
 
-  <section class="hero">
-    <div class="hero-body">
-      <div class="container">
-        <div class="columns is-centered">
-          <div class="column has-text-centered">
-            <img src="./resources/logo_opennavmap.png" width="220" alt="OpenNavMap Logo"></img>
-            <h1 class="title is-1 publication-title">
-              OpenNavMap: Structure-Free Topometric Mapping via <br>Large-Scale Collaborative Localization
-            </h1>
-            <div class="is-size-4 publication-authors">
-              <span class="author-block">
-                <a href="https://gogojjh.github.io/">Jianhao Jiao</a><sup>1</sup>&nbsp;&nbsp;&nbsp;&nbsp;
-                <a href="https://lck666666.github.io/">Changkun Liu</a><sup>2,3</sup>&nbsp;&nbsp;&nbsp;&nbsp;
-                <a href="https://jingwenyust.github.io/">Jingwen Yu</a><sup>3</sup>&nbsp;&nbsp;&nbsp;&nbsp;
-                <a href="">Boyi Liu</a><sup>3</sup>&nbsp;&nbsp;&nbsp;&nbsp;
-                <a href="https://qianyi-zhang.github.io/">Qianyi Zhang</a><sup>4</sup>&nbsp;&nbsp;&nbsp;&nbsp;
-                <a href="https://ywang-zju.github.io/">Yue Wang</a><sup>5</sup>&nbsp;&nbsp;&nbsp;&nbsp;
-                <a href="https://dkanou.github.io/">Dimitrios Kanoulas</a><sup>1,6</sup>
-                <br>
-                <span class="is-size-6">
-                  <sup>1</sup>UCL, UK &nbsp;
-                  <sup>2</sup>Dept. of CSE, HKUST, China &nbsp;
-                  <sup>3</sup>Dept. of ECE, HKUST, China &nbsp;
-                  <sup>4</sup>Nankai University, China &nbsp;
-                  <sup>5</sup>Zhejiang University, China &nbsp;
-                  <sup>6</sup>AI Centre, UCL / Athena RC, Greece
-                </span>
-                <!-- <br><br>
-                <img src="./resources/rpl-ucl-logo.png" width="220"></img>
-                &nbsp;&nbsp;
-                <img src="./resources/hkust_logo.png" width="170"></img>
-                &nbsp;&nbsp;
-                <img src="./resources/nankai_logo.png" width="120"></img>
-                &nbsp;&nbsp;
-                <img src="./resources/zju_logo.png" width="120"></img> -->
-              </span>
-            </div>
+<header class="site-header" aria-label="Site">
+  <div class="hdr-inner">
+    <a class="wordmark" href="#p00" aria-label="OpenNavMap, back to top">OpenNavMap</a>
+    <nav class="hdr-links" aria-label="Project links">
+      <a href="https://arxiv.org/abs/2601.12291" target="_blank" rel="noopener">Paper</a>
+      <a class="hdr-opt" href="https://github.com/RPL-CS-UCL/OpenNavMap" target="_blank" rel="noopener">Code</a>
+      <a class="hdr-opt" href="https://drive.google.com/drive/folders/1Tpl3Leu0uo1b4iolLFpdfI5LO8CYCRe-" target="_blank" rel="noopener">Data</a>
+      <span class="hdr-opt hdr-off" aria-disabled="true">Video</span>
+      <button type="button" class="btn btn-sm nav-present" data-action="present" title="Talk mode (P)">Present <kbd>P</kbd></button>
+    </nav>
+  </div>
+</header>
 
-            <div class="notification" style="background-color: #e9f6fb; border-left: 5px solid #3298dc; color: #236fa1; font-weight: 500; max-width: 900px; margin: 20px auto 0 auto; font-size: 1.15rem; text-align: center;">
-              🏆 <strong>Best Paper</strong> at <a href="https://adacompnus.github.io/open-world-navigation-25" target="_blank" style="color: #236fa1; text-decoration: underline;"><strong>IROS 2025 Open World Navigation in Human-centric Environments Workshop</strong></a>
-            </div>
+<main id="panels">
+
+<!-- P00 hero -->
+<section class="panel cover" id="p00" data-talk-seconds="20" aria-label="OpenNavMap">
+  <div class="stage">
+    <div class="stage-inner">
+      <svg class="dotgrid" style="left:0;top:0" width="1920" height="1080" viewBox="0 0 1920 1080" aria-hidden="true">
+        <defs><pattern id="hero-dots" width="32" height="32" patternUnits="userSpaceOnUse"><circle class="dot" cx="16" cy="16" r="1.8"/></pattern></defs>
+        <rect width="1920" height="1080" fill="url(#hero-dots)"/>
+      </svg>
+      <canvas class="merge-canvas hero-canvas" id="hero-canvas" style="left:0;top:0" width="1920" height="1080" role="img" aria-label="The UCL campus map growing as 55 pieces are merged one at a time; the newest piece is green, and eight photos from different pieces, by day and at night, are pinned where they were taken."></canvas>
+      <div class="hero-fade" style="left:0;top:0" aria-hidden="true"></div>
+      <img class="hero-pin" src="media/stills/photos/hero_003156.jpg" alt="" data-node="3156" data-piece="42" width="200" height="112" style="left:1300px;top:130px">
+      <img class="hero-pin" src="media/stills/photos/hero_004869.jpg" alt="" data-node="4869" data-piece="43" width="200" height="112" style="left:1150px;top:350px">
+      <img class="hero-pin" src="media/stills/photos/hero_000165.jpg" alt="" data-node="165" data-piece="44" width="200" height="112" style="left:1000px;top:660px">
+      <img class="hero-pin" src="media/stills/photos/hero_002071.jpg" alt="" data-node="2071" data-piece="38" width="200" height="112" style="left:1060px;top:820px">
+      <img class="hero-pin" src="media/stills/photos/hero_000692.jpg" alt="" data-node="692" data-piece="30" width="200" height="112" style="left:1110px;top:958px">
+      <img class="hero-pin" src="media/stills/photos/hero_004545.jpg" alt="" data-node="4545" data-piece="5" width="200" height="112" style="left:1480px;top:540px">
+      <img class="hero-pin" src="media/stills/photos/hero_001972.jpg" alt="" data-node="1972" data-piece="6" width="200" height="112" style="left:1700px;top:640px">
+      <img class="hero-pin" src="media/stills/photos/hero_001702.jpg" alt="" data-node="1702" data-piece="7" width="200" height="112" style="left:1480px;top:960px">
+      <div class="hero-text" data-narrow="hide" style="left:96px;bottom:112px">
+        <div class="hero-eyebrow">IEEE Transactions on Robotics (T-RO)</div>
+        <a class="hero-award" href="https://adacompnus.github.io/open-world-navigation-25" target="_blank" rel="noopener">🏆 Best Paper at IROS 2025 Open World Navigation in Human-centric Environments Workshop</a>
+        <h1 class="hero-title">OpenNavMap</h1>
+        <p class="hero-sub">Multi-Session Appearance-Based Topometric Mapping for Scalable Visual Navigation</p>
+        <div class="hero-stats">
+          <div><b><span data-num="r2_walk_km"></span> km</b><span>recorded on foot</span></div>
+          <div><b><span data-num="r2_pieces"></span> submaps</b><span>merged into one map</span></div>
+          <div><b><span data-num="r2_days"></span> days</b><span>first to last recording</span></div>
+          <div class="chip">No GPS</div>
+        </div>
+      </div>
+      <div class="hero-counter" data-narrow="hide" style="right:96px;top:64px">R2 · UCL campus · submap <span class="tnum" id="hero-piece">55</span> / <span data-num="r2_pieces"></span></div>
+    </div>
+  </div>
+  <p class="fig-cap">Watch the map grow from piece 01 to <span data-num="r2_pieces"></span>: the newest piece is green, and each pinned photo is tied to the spot where it was taken.</p>
+  <div class="narrow-copy">
+    <div class="hero-eyebrow">IEEE Transactions on Robotics (T-RO)</div>
+        <a class="hero-award" href="https://adacompnus.github.io/open-world-navigation-25" target="_blank" rel="noopener">🏆 Best Paper at IROS 2025 Open World Navigation in Human-centric Environments Workshop</a>
+    <h1 class="hero-title">OpenNavMap</h1>
+    <p class="hero-sub">Multi-Session Appearance-Based Topometric Mapping for Scalable Visual Navigation</p>
+    <div class="hero-stats">
+      <div><b><span data-num="r2_walk_km"></span> km</b><span>recorded on foot</span></div>
+      <div><b><span data-num="r2_pieces"></span> submaps</b><span>merged into one map</span></div>
+      <div><b><span data-num="r2_days"></span> days</b><span>first to last recording</span></div>
+      <div class="chip">No GPS</div>
+    </div>
+  </div>
+  <aside class="panel-notes">OpenNavMap: a navigation map made of photos and where they were taken; it keeps no 3D of its own. Behind me, one campus map grows piece by piece: <span data-num="r2_walk_km"></span> km recorded over <span data-num="r2_days"></span> days, with no GPS. A robot shown one of these photos can go to that place.</aside>
+</section>
+
+<section class="authors" aria-label="Authors and links">
+  <div class="wrap">
+    <p class="author-list">
+      <span><a href="https://gogojjh.github.io/" target="_blank" rel="noopener">Jianhao Jiao</a><sup>1</sup><sup class="dagger">†</sup></span>
+      <span><a href="https://lck666666.github.io/" target="_blank" rel="noopener">Changkun Liu</a><sup>2</sup></span>
+      <span><a href="https://jingwenyust.github.io/" target="_blank" rel="noopener">Jingwen Yu</a><sup>2</sup></span>
+      <span>Boyi Liu<sup>2</sup><sup class="dagger">†</sup></span>
+      <span><a href="https://qianyi-zhang.github.io/" target="_blank" rel="noopener">Qianyi Zhang</a><sup>3</sup></span>
+      <span><a href="https://ywang-zju.github.io/" target="_blank" rel="noopener">Yue Wang</a><sup>4</sup></span>
+      <span><a href="https://dkanou.github.io/" target="_blank" rel="noopener">Dimitrios Kanoulas</a><sup>1 5</sup></span>
+    </p>
+    <ol class="affil">
+      <li><sup>1</sup>UCL</li>
+      <li><sup>2</sup>HKUST</li>
+      <li><sup>3</sup>NKU</li>
+      <li><sup>4</sup>ZJU</li>
+      <li><sup>5</sup>Archimedes / Athena RC, Greece</li>
+    </ol>
+    <p class="author-legend">† Corresponding authors</p>
+    <div class="author-foot">
+      <div class="btn-row">
+        <a class="btn btn-primary" href="https://arxiv.org/abs/2601.12291" target="_blank" rel="noopener">Paper</a>
+        <a class="btn" href="https://github.com/RPL-CS-UCL/OpenNavMap" target="_blank" rel="noopener">Code</a>
+        <a class="btn" href="https://drive.google.com/drive/folders/1Tpl3Leu0uo1b4iolLFpdfI5LO8CYCRe-" target="_blank" rel="noopener">Data</a>
+        <span class="chip chip-off" aria-disabled="true">Video — coming</span>
+      </div>
+      <div class="logos">
+        <img class="logo-wordmark" src="media/logos/ucl_logo.svg" alt="UCL" height="40" width="142">
+        <img src="media/logos/hkust_symbol.svg" alt="HKUST" height="68" width="44">
+        <img src="media/logos/nankai_logo.svg" alt="Nankai University" height="68" width="68">
+        <img src="media/logos/zju_logo.svg" alt="Zhejiang University" height="68" width="68">
+      </div>
+    </div>
+  </div>
+</section>
+
+<nav class="toc" aria-label="On this page">
+  <div class="wrap"><span class="toc-label">On this page</span><div class="toc-links"></div></div>
+</nav>
+
+<!-- HOOK: talk only -->
+<section class="panel hook" id="hook" data-talk-seconds="20" data-talk-only>
+  <h2 class="panel-title">OpenNavMap for scalable visual navigation</h2>
+  <div class="stage" role="img" aria-label="Left: a legged robot crossing a sunny campus bridge, filmed from behind at 12 times speed. Right: a goal photo of a building entrance, then a tilted view of a real map graph with grey nodes and edges, a green route from the lab to the entrance, and three map photos on stems.">
+    <div class="stage-inner">
+      <div class="hook-lbl" style="left:96px;top:166px">Robot <span>12x</span></div>
+      <video class="hook-video" style="left:96px;top:208px" src="media/nav/r7_msg1_robot.mp4" poster="media/nav/r7_msg1_robot.jpg" muted playsinline loop preload="metadata" width="1120" height="630"></video>
+      <div class="hook-chain" style="left:1264px;top:166px">Goal image <i>&rarr;</i> Topometric map <i>&rarr;</i> Robot</div>
+      <img class="hook-goal" style="left:1264px;top:208px" src="media/stills/r7/hook_goal.jpg" alt="Goal photo: the glass entrance of a campus building" width="448" height="252">
+      <span class="hook-tag" style="left:1276px;top:220px">goal</span>
+      <div class="hook-map" id="hook-map" style="left:1264px;top:470px;width:560px;height:368px"></div>
+      <p class="hook-cap" style="left:96px;top:866px;width:1120px">Give it one photo; it plans a route and goes there.</p>
+    </div>
+  </div>
+  <p class="fig-cap">One goal photo, a route on the shared photo map, and the robot walking it (12 times faster than real).</p>
+  <div class="panel-src">Our recording, 12x</div>
+  <aside class="panel-notes">Here is the whole idea in one slide. We give the robot a single photo of where to go; it finds that place in its photo map, plans a route along the map's links, and goes there. The map on the right is a real one from our campus runs, and the clip is the robot on a bridge that this map covers, twelve times faster than real.</aside>
+</section>
+
+<!-- P01 -->
+<section class="panel" id="p01" data-chapter="1" data-auto-steps="1500" data-step-labels="Indoor, one run|Long range or long time|Large area + long time|OpenNavMap" data-talk-seconds="50" data-toc="Scale in space and time">
+  <div class="eyebrow"><span>01</span> / Scale in space and time</div>
+  <h2 class="panel-title">Scaling visual navigation in space and time</h2>
+  <p class="panel-desc">Existing systems by spatial scale and map lifetime.</p>
+  <div class="stage" role="img" aria-label="Chart: horizontal axis, spatial scale, from a room to a city district; vertical axis, map lifetime, from one run to lifelong. Each work is one dot with its picture. Step 1: HomeRobot, BEHAVIOR-1K and Mobility VLA, whose map is landmark-based, work in a room or on a floor for one run. Step 2: CREStE and ViKiNG reach kilometres but keep no map; AutoInspect runs for weeks in one building. Step 3: a dashed corner marks large area and long time together. Step 4 adds OpenNavMap's three maps with a photo each: a vineyard over 6 minutes, the HKUST campus over 18 hours, and the UCL campus over 110 days and 15.7 km, the last one inside the dashed corner, pointing to lifelong navigation as what comes next. Legend: grey dot, map-based prior work; dashed ring, no map; green dot, OpenNavMap.">
+    <div class="stage-inner">
+      <svg class="p01-chart" style="left:0;top:0" width="1920" height="1080" viewBox="0 0 1920 1080" aria-hidden="true">
+        <g class="axis" stroke-width="2" fill="none">
+          <path d="M350 240 V850 H1830"/>
+          <path d="M380 850 v12 M596 850 v12 M833 850 v12 M1287 850 v12 M1740 850 v12"/>
+          <path d="M338 290 h12 M338 420 h12 M338 550 h12 M338 680 h12 M338 800 h12"/>
+        </g>
+        <rect class="gap-box p01-s" data-step="3" x="1215" y="245" width="615" height="340" stroke-width="2" stroke-dasharray="10 8"/>
+        <!-- one dot per work; a short leader to its picture -->
+        <g class="known">
+          <path class="p01-s" data-step="1" d="M390 789 V598 M480 789 V784 M609 792 L626 784" stroke-width="2"/>
+          <path class="p01-s" data-step="2" d="M825 485 H812 M1423 788 V784 M1560 788 V784" stroke-width="2"/>
+          <circle class="p01-s" data-step="1" cx="390" cy="800" r="11"/>
+          <circle class="p01-s" data-step="1" cx="480" cy="800" r="11"/>
+          <circle class="p01-s" data-step="1" cx="600" cy="800" r="11"/>
+          <circle class="p01-s" data-step="2" cx="836" cy="485" r="11"/>
+          <circle class="open p01-s" data-step="2" cx="1423" cy="800" r="12" stroke-width="3" stroke-dasharray="6 5"/>
+          <circle class="open p01-s" data-step="2" cx="1560" cy="800" r="12" stroke-width="3" stroke-dasharray="6 5"/>
+        </g>
+        <!-- legend, one place -->
+        <g class="known p01-legend">
+          <circle cx="1129" cy="931" r="10"/>
+          <circle class="open" cx="1484" cy="931" r="11" stroke-width="3" stroke-dasharray="6 5"/>
+        </g>
+      </svg>
+      <div class="ax-y" data-narrow="hide" style="left:96px;top:196px">↑ Map lifetime</div>
+      <div class="ax-x" data-narrow="hide" style="left:350px;top:916px">Spatial scale →</div>
+      <div class="ytick" data-narrow="hide" style="right:1590px;top:275px">Lifelong</div>
+      <div class="ytick" data-narrow="hide" style="right:1590px;top:405px">Months</div>
+      <div class="ytick" data-narrow="hide" style="right:1590px;top:535px">Days</div>
+      <div class="ytick" data-narrow="hide" style="right:1590px;top:665px">Hours</div>
+      <div class="ytick" data-narrow="hide" style="right:1590px;top:785px">One run</div>
+      <div class="xtick" data-narrow="hide" style="left:280px;top:870px">Room</div>
+      <div class="xtick" data-narrow="hide" style="left:496px;top:870px">Floor</div>
+      <div class="xtick" data-narrow="hide" style="left:733px;top:870px">Building</div>
+      <div class="xtick" data-narrow="hide" style="left:1187px;top:870px">Campus</div>
+      <div class="xtick" data-narrow="hide" style="left:1640px;top:870px">District</div>
+      <div class="lbl p01-leg" data-narrow="hide" style="left:1149px;top:916px">map-based prior work</div>
+      <div class="lbl p01-leg" data-narrow="hide" style="left:1505px;top:916px">no map</div>
+      <div class="gap-label p01-s" data-step="3" data-narrow="hide" style="left:1215px;top:205px">Large area + long time</div>
+
+      <!-- figure cards: one crop per named work; credits and licences in the footer and the source line -->
+      <figure class="p01-card p01-s" data-step="1" data-narrow="hide" style="left:362px;top:430px" title="Simulated homes and a real living room, one run per task"><img src="media/stills/r4/p01_homerobot.jpg" alt="HomeRobot: a Stretch robot in simulated homes and a real living room" width="178" height="100"><figcaption>HomeRobot <i>[CoRL'2023]</i></figcaption></figure>
+      <figure class="p01-card p01-s" data-step="1" data-narrow="hide" style="left:420px;top:616px" title="Multi-room simulated scenes, one run per task"><img src="media/stills/r4/p01_behavior1k.jpg" alt="BEHAVIOR-1K: two simulated rooms, each with a robot doing a chore" width="178" height="100"><figcaption>BEHAVIOR-1K <i>[CoRL'2023]</i></figcaption></figure>
+      <figure class="p01-card p01-s" data-step="1" data-narrow="hide" style="left:620px;top:592px" title="Office floor, map from one guided tour"><img src="media/stills/r4/p01_mobility_vla.jpg" alt="Mobility VLA: plan of an office floor with robot paths, and the robot" width="178" height="100"><figcaption>Mobility VLA <i>[CoRL'2024]</i><em class="p01-tag">landmark-based map</em></figcaption></figure>
+      <!-- AutoInspect crop: arXiv non-exclusive licence, permission to be confirmed by the authors -->
+      <figure class="p01-card p01-s" data-step="2" data-narrow="hide" style="left:622px;top:402px" title="Weeks of inspection in one facility, map built once beforehand"><img src="media/stills/r4/p01_autoinspect.jpg" alt="AutoInspect: a small legged robot under a huge support column in a fusion facility" width="178" height="100"><figcaption>AutoInspect <i>[T-FR'2025]</i></figcaption></figure>
+      <figure class="p01-card p01-s" data-step="2" data-narrow="hide" style="left:1330px;top:618px" title="Kilometre-scale loop driven without keeping a map"><img src="media/stills/r4/p01_creste.jpg" alt="CREStE: satellite map of a 2 km urban loop with the route and goals" width="178" height="100"><figcaption>CREStE <i>[RSS'2025]</i></figcaption></figure>
+      <figure class="p01-card p01-s" data-step="2" data-narrow="hide" style="left:1545px;top:618px" title="Goals kilometres away, reached without keeping a map"><img src="media/stills/r4/p01_viking.jpg" alt="ViKiNG: a 1.2 km route on a satellite image and the robot's views" width="178" height="100"><figcaption>ViKiNG <i>[RSS'2022]</i></figcaption></figure>
+
+      <div data-step="4">
+        <svg class="p01-reveal" style="left:0;top:0" width="1920" height="1080" viewBox="0 0 1920 1080" aria-hidden="true">
+          <path class="leader" d="M842 791 L852 784 M1277 680 H1267 M1312 432 L1336 448" stroke-width="2"/>
+          <path class="arrow" d="M1318 398 L1590 300" stroke-width="2"/>
+          <path class="arrow" d="M1574 296 L1592 299 L1581 313" stroke-width="2" stroke-linejoin="round"/>
+          <circle class="onm" cx="833" cy="800" r="10"/>
+          <circle class="onm" cx="1287" cy="680" r="10"/>
+          <circle class="onm onm-big" cx="1300" cy="420" r="16" stroke-width="3"/>
+          <circle class="onm" cx="900" cy="931" r="10"/>
+        </svg>
+        <figure class="p01-card p01-onm" data-narrow="hide" style="left:852px;top:640px"><img src="media/stills/photos/p01_vineyard.jpg" alt="Vineyard rows under a cloudy sky" width="178" height="100"><figcaption>Vineyard <i data-num="r0_span"></i></figcaption></figure>
+        <figure class="p01-card p01-onm" data-narrow="hide" style="left:1077px;top:616px"><img src="media/stills/photos/p01_hkust.jpg" alt="A round campus building at night" width="178" height="100"><figcaption>HKUST Campus <i data-num="r1_span"></i></figcaption></figure>
+        <figure class="p01-card p01-onm" data-narrow="hide" style="left:1336px;top:446px"><img src="media/stills/photos/hero_002071.jpg" alt="A paved square on the UCL campus by day" width="178" height="100"></figure>
+        <div class="lbl lbl-onm" data-narrow="hide" style="left:1336px;top:400px">UCL Campus · <span data-num="r2_days"></span> days · <span data-num="r2_walk_km"></span> km</div>
+        <div class="lbl lbl-g p01-leg" data-narrow="hide" style="left:920px;top:916px"><b>OpenNavMap</b></div>
+        <div class="next-tag" data-narrow="hide" style="right:106px;top:258px"><span>Next:</span><br>lifelong navigation</div>
+      </div>
+    </div>
+  </div>
+  <p class="fig-cap">The dashed corner is large area and long time together; the big green dot inside it is the UCL campus map. <span class="fig-note">Teach-and-repeat also runs for long periods, but replays one route a robot was taught; here the map is taught by many recordings, people and cameras.</span></p>
+  <div class="narrow-copy">
+    <ul class="nc-rows">
+      <li><b>Today</b><span>Household benchmarks and Mobility VLA (landmark-based map): a room or a floor, one run. CREStE and ViKiNG: kilometres, no map kept. AutoInspect: one building, mapped beforehand.</span></li>
+      <li><b>OpenNavMap</b><span>Vineyard · <span data-num="r0_span"></span>; HKUST Campus · <span data-num="r1_span"></span>; UCL Campus · <span data-num="r2_days"></span> days · <span data-num="r2_walk_km"></span> km.</span></li>
+      <li><b>What's next</b><span>a lifelong robot: large area and long time together.</span></li>
+    </ul>
+  </div>
+  <div class="panel-src">Positions indicative · image credits in the footer</div>
+  <aside class="panel-notes">Robots already complete tasks in homes: BEHAVIOR-1K has <span data-num="gap_behavior_scenes"></span> multi-room scenes, HomeRobot OVMM <span data-num="gap_homerobot_homes"></span> homes, and Mobility VLA navigates a <span data-num="gap_mvla_area_m2"></span> m² office floor from a <span data-num="gap_mvla_tour_min"></span>-minute tour, on a landmark-based map. CREStE drives a <span data-num="gap_creste_km"></span> km loop and ViKiNG reaches goals up to <span data-num="gap_viking_km"></span> km away, but neither keeps a map. AutoInspect ran for <span data-num="gap_autoinspect_days"></span> days in one facility mapped beforehand. Nobody covers the dashed corner: a large area over a long time. Our maps: a vineyard in minutes, the HKUST campus over hours, the UCL campus over <span data-num="r2_days"></span> days. Teach-and-repeat replays a taught route; here the teaching comes from many recordings.</aside>
+</section>
+
+<!-- P01b: Idea 1, many everyday devices build one map (r4_content) -->
+<section class="panel" id="p01b" data-chapter="1" data-auto-steps="1400" data-step-labels="Aria glasses|iPhone|Vehicle camera|Merged map" data-talk-seconds="50" data-toc="Crowdsourcing mapping">
+  <div class="eyebrow"><span>02</span> / Crowdsourcing mapping</div>
+  <h2 class="panel-title">Crowdsourced mapping with heterogeneous devices</h2>
+  <p class="panel-desc">Region R1 (HKUST campus): multi-session data from glasses, smartphone and vehicle.</p>
+  <div class="stage" role="img" aria-label="Left: a short clip from each device that recorded the HKUST campus: Aria glasses (8 sessions), an iPhone 16 Pro (3 sessions, keyframes only) and a vehicle camera (2 sessions). Right: the paper's Figure 16a, the campus on a satellite image with the trajectories coloured by device, all 13 sessions in one merged map.">
+    <div class="stage-inner">
+      <figure class="i1-tile" data-step="1" style="left:96px;top:176px">
+        <video src="media/nav/r7_dev_aria.mp4" poster="media/nav/r7_dev_aria.jpg" muted loop playsinline preload="metadata" width="400" height="225" aria-label="Aria glasses at dusk on the HKUST campus: buses and a road junction, real time"></video>
+        <figcaption data-narrow="hide"><svg width="48" height="28" viewBox="0 0 48 28" aria-hidden="true"><g fill="none" stroke="#2e9e62" stroke-width="3"><circle cx="12" cy="16" r="9"/><circle cx="36" cy="16" r="9"/><path d="M21 14 Q24 10 27 14 M3 14 L1 6 M45 14 L47 6"/></g></svg>Aria glasses <span class="i1-n">×<span data-num="r1_rec_aria"></span></span></figcaption>
+      </figure>
+      <figure class="i1-tile" data-step="2" style="left:96px;top:446px">
+        <video src="media/nav/r7_dev_phone.mp4" poster="media/nav/r7_dev_phone.jpg" muted loop playsinline preload="metadata" width="400" height="225" aria-label="iPhone keyframes on the HKUST campus, shown at 2 frames per second: an escalator and an open atrium"></video>
+        <figcaption data-narrow="hide"><svg width="48" height="28" viewBox="0 0 48 28" aria-hidden="true"><rect x="16" y="1" width="16" height="26" rx="3" fill="none" stroke="#84168a" stroke-width="3"/><path d="M21 22 h6" stroke="#84168a" stroke-width="3"/></svg>iPhone · keyframes <span class="i1-n">×<span data-num="r1_rec_phone"></span></span></figcaption>
+      </figure>
+      <figure class="i1-tile" data-step="3" style="left:96px;top:716px">
+        <video src="media/nav/r7_dev_vehicle.mp4" poster="media/nav/r7_dev_vehicle.jpg" muted loop playsinline preload="metadata" width="400" height="225" aria-label="A campus road seen from a vehicle camera, real time"></video>
+        <figcaption data-narrow="hide"><svg width="48" height="28" viewBox="0 0 48 28" aria-hidden="true"><g fill="none" stroke="#d4502b" stroke-width="3"><path d="M4 20 V14 L12 6 H34 L42 14 H45 V20 Z"/><circle cx="14" cy="22" r="4" fill="#fff"/><circle cx="34" cy="22" r="4" fill="#fff"/></g></svg>Vehicle camera <span class="i1-n">×<span data-num="r1_rec_vehicle"></span></span></figcaption>
+      </figure>
+      <img class="i1-map" src="media/stills/r4/idea1_fig16a.jpg" alt="Paper Figure 16a: the HKUST campus on a satellite image, 0.69 by 0.68 km, with Aria glasses trajectories in green, vehicle in red and smartphone in purple, all in one map" width="1260" height="767" data-step="4" style="left:564px;top:176px">
+      <div class="i1-cap" data-step="4" data-narrow="hide" style="left:564px;top:954px"><b data-num="r1_recordings"></b> mapping sessions → one merged map</div>
+
+    </div>
+  </div>
+  <p class="fig-cap">One map of the HKUST campus from <span data-num="r1_recordings"></span> mapping sessions by three kinds of everyday device.</p>
+  <div class="narrow-copy">
+    <ul class="nc-rows">
+      <li><b>Devices</b><span>Aria glasses ×<span data-num="r1_rec_aria"></span> · iPhone 16 Pro ×<span data-num="r1_rec_phone"></span> · vehicle camera ×<span data-num="r1_rec_vehicle"></span> → one merged map of <span data-num="r1_recordings"></span> sessions.</span></li>
+    </ul>
+  </div>
+  <div class="panel-src">Paper Fig. 16(a) · our recordings</div>
+  <aside class="panel-notes">Idea one: the map is not made by one survey vehicle on one day. On the HKUST campus, everyday cameras each added mapping sessions: Aria glasses eight, an iPhone three, a car camera two, on different days, by day and at night. This is crowdsourced mapping, with no GPS. The system joins all <span data-num="r1_recordings"></span> sessions into one merged map, shown on the right as in the paper's Figure 16a.</aside>
+</section>
+
+<!-- P01c: why crowdsourcing (r6) -->
+<section class="panel" id="p01c" data-chapter="1" data-talk-seconds="40" data-toc="Benefits of crowdsourcing">
+  <div class="eyebrow"><span>03</span> / Benefits of crowdsourcing</div>
+  <h2 class="panel-title">Why crowdsource the map?</h2>
+  <p class="panel-desc">Casual, asynchronous recorders replace one surveyor: less effort each, wider coverage, fresher data.</p>
+  <div class="stage" role="img" aria-label="Chart of region R2, UCL campus: mapped path length grows step by step from September to December as 31 recording sessions are added, reaching 15.7 km in one map; the longest single session alone covers 1.8 km. Right, one collector versus a crowd: efficiency, 3.3 hours of recording versus about 20 minutes each if 10 people share it (estimate); coverage, 1.8 km from one session versus 15.7 km merged (measured); revisit, a visit every 11 days versus about every 1.1 days with 10 contributors (estimate).">
+    <div class="stage-inner">
+      <div class="wy-plot" style="left:96px;top:184px">
+        <svg class="wy-chart" width="1000" height="800" viewBox="0 0 1000 800" aria-hidden="true">
+        <line class="wy-grid" x1="100" x2="960" y1="720.0" y2="720.0"/>
+        <line class="wy-grid" x1="100" x2="960" y1="528.8" y2="528.8"/>
+        <line class="wy-grid" x1="100" x2="960" y1="337.6" y2="337.6"/>
+        <line class="wy-grid" x1="100" x2="960" y1="146.5" y2="146.5"/>
+        <line class="wy-axis" x1="100.0" x2="100.0" y1="720" y2="730"/>
+        <line class="wy-axis" x1="313.2" x2="313.2" y1="720" y2="730"/>
+        <line class="wy-axis" x1="533.6" x2="533.6" y1="720" y2="730"/>
+        <line class="wy-axis" x1="746.8" x2="746.8" y1="720" y2="730"/>
+        <line class="wy-axis" x1="100" x2="960" y1="720" y2="720"/>
+        <line class="wy-single" x1="100" x2="960" y1="651.7" y2="651.7"/>
+        <path class="wy-curve" d="M123.9,720.0H123.9V713.8H723.5V688.1H728.7V661.0H736.0V592.7H736.1V568.1H758.1V559.8H758.1V557.2H758.2V555.0H759.1V544.5H759.1V536.8H772.2V534.4H772.2V531.9H772.3V528.9H772.3V520.1H772.4V503.4H772.4V476.4H773.1V472.9H773.1V468.7H773.1V435.9H773.1V386.2H773.2V379.2H773.4V377.2H778.2V374.2H778.3V365.8H894.1V356.3H899.8V321.1H900.7V278.0H901.0V238.3H908.2V182.8H908.3V173.4H908.7V117.6" stroke="#2e9e62"/>
+        <g fill="#2e9e62" stroke="var(--surface)" stroke-width="2"><circle cx="123.9" cy="713.8" r="7"/><circle cx="723.5" cy="688.1" r="7"/><circle cx="728.7" cy="661.0" r="7"/><circle cx="736.0" cy="592.7" r="7"/><circle cx="736.1" cy="568.1" r="7"/><circle cx="758.1" cy="559.8" r="7"/><circle cx="758.1" cy="557.2" r="7"/><circle cx="758.2" cy="555.0" r="7"/><circle cx="759.1" cy="544.5" r="7"/><circle cx="759.1" cy="536.8" r="7"/><circle cx="772.2" cy="534.4" r="7"/><circle cx="772.2" cy="531.9" r="7"/><circle cx="772.3" cy="528.9" r="7"/><circle cx="772.3" cy="520.1" r="7"/><circle cx="772.4" cy="503.4" r="7"/><circle cx="772.4" cy="476.4" r="7"/><circle cx="773.1" cy="472.9" r="7"/><circle cx="773.1" cy="468.7" r="7"/><circle cx="773.1" cy="435.9" r="7"/><circle cx="773.1" cy="386.2" r="7"/><circle cx="773.2" cy="379.2" r="7"/><circle cx="773.4" cy="377.2" r="7"/><circle cx="778.2" cy="374.2" r="7"/><circle cx="778.3" cy="365.8" r="7"/><circle cx="894.1" cy="356.3" r="7"/><circle cx="899.8" cy="321.1" r="7"/><circle cx="900.7" cy="278.0" r="7"/><circle cx="901.0" cy="238.3" r="7"/><circle cx="908.2" cy="182.8" r="7"/><circle cx="908.3" cy="173.4" r="7"/><circle cx="908.7" cy="117.6" r="7"/></g>
+        </svg>
+      </div>
+      <div class="wy-lab" data-narrow="hide" style="left:96px;top:190px">Path length [km]</div>
+      <div class="wy-tick wy-ty" data-narrow="hide" style="left:182px;top:904px">0</div>
+      <div class="wy-tick wy-ty" data-narrow="hide" style="left:182px;top:713px">5</div>
+      <div class="wy-tick wy-ty" data-narrow="hide" style="left:182px;top:522px">10</div>
+      <div class="wy-tick wy-ty" data-narrow="hide" style="left:182px;top:330px">15</div>
+      <div class="wy-tick" data-narrow="hide" style="left:204px;top:918px">Sep</div>
+      <div class="wy-tick" data-narrow="hide" style="left:417px;top:918px">Oct</div>
+      <div class="wy-tick" data-narrow="hide" style="left:638px;top:918px">Nov</div>
+      <div class="wy-tick" data-narrow="hide" style="left:851px;top:918px">Dec</div>
+      <div class="wy-note" data-narrow="hide" style="left:212px;top:794px">Longest session: 1.8 km</div>
+      <div class="wy-end" data-narrow="hide" style="left:977px;top:280px">15.7 km in one map</div>
+      <div class="wy-note wy-r" data-narrow="hide" style="left:977px;top:328px">31 sessions · 110 days</div>
+      <div class="wy-head" data-narrow="hide" style="left:1160px;top:184px"><span class="wy-a">One collector</span> → <span class="wy-b">crowd</span></div>
+      <div class="wy-rows" data-narrow="hide" style="left:1160px;top:258px">
+        <div class="wy-row"><div class="wy-k">Efficiency</div><div class="wy-nums"><span class="wy-a">3.3 h</span><span class="wy-arr">→</span><span class="wy-b">20 min</span></div><div class="wy-basis">recording time per person, split 10 ways<sup>*</sup></div></div>
+        <div class="wy-row"><div class="wy-k">Coverage</div><div class="wy-nums"><span class="wy-a">1.8 km</span><span class="wy-arr">→</span><span class="wy-b">15.7 km</span></div><div class="wy-basis">longest session vs. merged (measured)</div></div>
+        <div class="wy-row"><div class="wy-k">Revisit interval</div><div class="wy-nums"><span class="wy-a">11<i class="wy-u">days</i></span><span class="wy-arr">→</span><span class="wy-b">1.1<i class="wy-u">days</i></span></div><div class="wy-basis">How long until the same place is recorded again: we went out on 10 of 110 days; 10 contributors would return about daily<sup>*</sup></div></div>
+      </div>
+      <div class="wy-foot" data-narrow="hide" style="left:1160px;top:928px"><sup>*</sup>Estimate: 10 contributors, each as active as ours.</div>
+    </div>
+  </div>
+  <p class="fig-cap">Many casual recorders instead of one operator's survey. Region R2, UCL campus: 31 sessions over 110 days add up to 15.7 km of mapped path, 8.8 times the longest single session; parallel contributors would cut collection time and revisit gaps (estimate).</p>
+  <div class="narrow-copy">
+    <ul class="nc-rows">
+      <li><b>Data</b><span>Region R2 (UCL campus): 31 sessions on 10 days over 110 days → 15.7 km of path in one map.</span></li>
+      <li><b>Efficiency</b><span>3.3 h of recording by one collector → about 20 min each if 10 people share it (estimate).</span></li>
+      <li><b>Coverage</b><span>Longest single session 1.8 km → 15.7 km merged (8.8×, measured).</span></li>
+      <li><b>Revisit interval</b><span>How long until the same place is recorded again: every 11 days (10 recording days in 110) → about every 1.1 days with 10 contributors (estimate).</span></li>
+    </ul>
+  </div>
+  <div class="panel-src">Supplementary Tab. I · *estimate: 10 parallel contributors</div>
+  <aside class="panel-notes">Why crowdsource at all? Many casual recorders, each on their own schedule, replace one operator's survey: each puts in less effort, together they cover more ground, and the data stays fresher. On the UCL campus our own team recorded 31 sessions on 10 different days over 110 days; no single session covers more than 1.8 kilometres, but merged they give 15.7 kilometres of path in one map. That took 3.3 hours of recording; if 10 people recorded in parallel, each as active as we were, each would spend about 20 minutes, and the campus would be revisited about every 1.1 days instead of every 11. Those two numbers are estimates under that assumption, not measurements, because this dataset was recorded by us and not by a real crowd. The point is that effort, coverage and freshness all improve with the number of contributors, so the map has to accept sessions from many people and devices.</aside>
+</section>
+
+<!-- P06: the three hard cases, right after Idea 1 (r4_talk) -->
+<section class="panel" id="p06" data-chapter="1" data-talk-seconds="50" data-toc="Three challenges">
+  <div class="eyebrow"><span>06</span> / Three challenges</div>
+  <h2 class="panel-title">Three reasons why multi-session mapping is hard</h2>
+  <p class="panel-desc" hidden></p>
+  <div class="stage" role="img" aria-label="The problem: how to achieve GPS-free multi-session mapping with cross-device data for scalable navigation. Below it, three photo pairs: a junction from one side and from the other side; a shop front by day and at night; a street through smart glasses and from a phone.">
+    <div class="stage-inner">
+      <div class="r5-k" data-narrow="hide" style="left:96px;top:166px">Problem</div>
+      <div class="i1-q tr-q" data-narrow="hide" style="left:96px;top:200px">How to achieve GPS-free multi-session mapping with cross-device data for scalable navigation?</div>
+      <div class="multiples" style="left:96px;top:362px;width:1728px;--cols:3;--gap:24px;--ar:560/290">
+        <div class="mult-col">
+          <div class="mult-label" data-narrow="hide">Sparse overlap</div>
+          <figure><img src="media/stills/photos/p02_intersection_view1.jpg" alt="A road junction seen from one side" width="560" height="370"><figcaption data-narrow="hide">one side</figcaption></figure>
+          <figure><img src="media/stills/photos/p02_intersection_view2.jpg" alt="The same junction seen from the other side" width="560" height="370"><figcaption data-narrow="hide">other side</figcaption></figure>
+        </div>
+        <div class="mult-col">
+          <div class="mult-label" data-narrow="hide">Appearance change</div>
+          <figure><img src="media/stills/photos/p02_shop.jpg" alt="A shop front by day" width="560" height="370"><figcaption data-narrow="hide">day</figcaption></figure>
+          <figure><img src="media/stills/photos/p02_shop_20241223.jpg" alt="The same shop front at night" width="560" height="370"><figcaption data-narrow="hide">night</figcaption></figure>
+        </div>
+        <div class="mult-col">
+          <div class="mult-label" data-narrow="hide">Cross-device viewpoint difference</div>
+          <figure><img src="media/stills/photos/p02_east_village_20241222.jpg" alt="A street seen through smart glasses" width="560" height="370"><figcaption data-narrow="hide">Aria glasses</figcaption></figure>
+          <figure style="--pos:50% 78%"><img src="media/stills/photos/p02_east_village_phone1.jpg" alt="The same street seen from a phone" width="560" height="370"><figcaption data-narrow="hide">smartphone</figcaption></figure>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="fig-cap">Each column is one reason joining is hard: two routes that barely overlap, the same place by day and at night, and two different cameras.</p>
+  <div class="narrow-copy">
+    <ul class="nc-rows">
+      <li><b>Problem</b><span>How to achieve GPS-free multi-session mapping with cross-device data for scalable navigation?</span></li>
+      <li><b>Little overlap between routes</b><span>the same junction, seen from one side and from the other side</span></li>
+      <li><b>Day vs. night</b><span>the same shop front by day and at night</span></li>
+      <li><b>Different cameras</b><span>smart glasses and a phone on the same street</span></li>
+    </ul>
+  </div>
+  <div class="panel-src"></div>
+  <aside class="panel-notes">Joining photo sets from different people is hard for three reasons. Routes barely overlap: the same junction from two sides. Appearance changes: the same shop front by day and at night. And cameras differ: smart glasses against a phone on the same street. The map has to link these pairs anyway. So the problem is: how to achieve GPS-free multi-session mapping with cross-device data, for scalable navigation?</aside>
+</section>
+
+<!-- P02 -->
+<section class="panel" id="p02" data-chapter="2" data-talk-seconds="80" data-toc="Map types and storage cost">
+  <div class="eyebrow"><span>02</span> / Map types and storage cost</div>
+  <h2 class="panel-title">Map storage: <span data-num="p02_ours_mb"></span> MB vs. <span data-num="p02_lm_disk_mb"></span> MB (landmark-based)</h2>
+  <p class="panel-desc">Map representations and their storage for the same <span data-num="map_photos"></span> images (region R2).</p>
+  <div class="stage" role="img" aria-label="Left: the same short path drawn as a dense map buried in dots, as a landmark map with 3D points and rays, and as OpenNavMap with cameras joined by green links. Right: total storage for the same 4,273 photos of region R2, as bars to one scale: landmark map with DISK features 5,216 MB and with SuperPoint features 8,546 MB, both estimated with the paper's formula; then OpenNavMap, 213 MB measured, followed by a blue segment for its 2.6 GB pretrained model, a one-off cost that does not grow with the map.">
+    <div class="stage-inner">
+      <svg class="p02-sch" id="p02-dense" style="left:96px;top:176px" width="460" height="218" viewBox="0 0 400 190" aria-hidden="true"></svg>
+      <svg class="p02-sch" id="p02-landmark" style="left:96px;top:436px" width="460" height="218" viewBox="0 0 400 190" aria-hidden="true"></svg>
+      <svg class="p02-sch" id="p02-onm" style="left:96px;top:696px" width="460" height="218" viewBox="0 0 400 190" aria-hidden="true"></svg>
+      <div class="sch-cap" data-narrow="hide" style="left:580px;top:226px"><b>Dense metric map</b>dense geometry</div>
+      <div class="sch-cap" data-narrow="hide" style="left:580px;top:486px"><b>Landmark-based map</b>3D landmarks + descriptors</div>
+      <div class="sch-cap sch-onm" data-narrow="hide" style="left:580px;top:726px"><b>Topometric map (ours)</b>images + poses + edges; keeps no 3D of its own</div>
+      <div class="vrule" style="left:880px;top:176px;height:740px"></div>
+
+      <div class="bars-title" data-narrow="hide" style="left:920px;top:176px">Map storage · <span data-num="map_photos"></span> images</div>
+      <div class="bar-row" data-narrow="hide" style="left:920px;top:236px;width:924px">
+        <div class="bar-head"><b>Landmark-based</b> <span>DISK · estimated</span><em class="bar-val"><span data-num="p02_lm_disk_mb"></span> MB</em></div>
+        <div class="bar-line"><div class="bar bar-grey" data-mb="p02_lm_disk_mb"></div></div>
+        <div class="bar-note"><span data-num="p02_lm_disk_mb_per_photo"></span> MB / image (5,000 keypoints × 128-D descriptors)</div>
+      </div>
+      <div class="bar-row" data-narrow="hide" style="left:920px;top:406px;width:924px">
+        <div class="bar-head"><b>Landmark-based</b> <span>SuperPoint · estimated</span><em class="bar-val"><span data-num="p02_lm_sp_mb"></span> MB</em></div>
+        <div class="bar-line"><div class="bar bar-grey" data-mb="p02_lm_sp_mb"></div></div>
+        <div class="bar-note"><span data-num="p02_lm_sp_mb_per_photo"></span> MB / image (4,096 keypoints × 256-D descriptors)</div>
+      </div>
+      <div data-step="2">
+        <div class="bar-row bar-onm" data-narrow="hide" style="left:920px;top:576px;width:924px">
+          <div class="bar-head"><b>OpenNavMap</b> <span>measured</span><em class="bar-val"><span data-num="p02_ours_mb"></span> MB</em></div>
+          <div class="bar-line"><div class="bar bar-green" data-mb="p02_ours_mb"></div><div class="bar bar-weights" data-mb="p02_weights_mb"></div><span class="bar-wlab">+ <span data-num="mast3r_weights_gb"></span> GB model weights, one-off</span></div>
+          <div class="bar-note"><span data-num="p02_ours_mb_per_photo"></span> MB / image (images only); weights do not grow with the map</div>
+        </div>
+      </div>
+      <div class="p02-fine" data-narrow="hide" style="left:920px;top:760px;width:924px">Measured keypoints → <span data-num="p02_lm_disk_mb_measured_kp"></span> / <span data-num="p02_lm_sp_mb_measured_kp"></span> MB (<span data-num="p02_ratio_disk"></span>× / <span data-num="p02_ratio_sp_measured_kp"></span>×)</div>
+    </div>
+  </div>
+  <p class="fig-cap">Total storage for the same <span data-num="map_photos"></span> photos, all bars to one scale. Grey: landmark maps from the paper's formula (Tab. III): photos × keypoints × descriptor size × 2 bytes. Green: our map, measured. Blue: the pretrained model our map needs at run time, <span data-num="mast3r_weights_gb"></span> GB once, whatever the map size.</p>
+  <div class="narrow-copy">
+    <ul class="nc-rows">
+      <li><b>OpenNavMap</b><span>keeps photos, where each was taken, and links — keeps no 3D of its own: <span data-num="p02_ours_mb"></span> MB for <span data-num="map_photos"></span> photos (<span data-num="p02_ours_mb_per_photo"></span> MB per photo), measured, paper Tab. IV.</span></li>
+      <li><b>Landmark map</b><span>keeps a descriptor per keypoint: <span data-num="p02_lm_disk_mb"></span> MB with DISK, <span data-num="p02_lm_sp_mb"></span> MB with SuperPoint, estimated with the paper's formula (Tab. III). With the keypoint counts measured on this dataset (<span data-num="p02_kp_disk"></span> and <span data-num="p02_kp_sp"></span> per photo): <span data-num="p02_lm_disk_mb_measured_kp"></span> MB and <span data-num="p02_lm_sp_mb_measured_kp"></span> MB, i.e. <span data-num="p02_ratio_disk"></span>× and <span data-num="p02_ratio_sp_measured_kp"></span>×.</span></li>
+      <li><b>Fixed cost</b><span>The photo map needs a <span data-num="mast3r_weights_gb"></span> GB pretrained model at run time — a fixed cost that does not grow with the map.</span></li>
+    </ul>
+  </div>
+  <div class="panel-src">Paper Tab. III, IV, Sec. V-B · MB = 2<sup>20</sup> bytes, GB = 2<sup>30</sup> bytes</div>
+  <aside class="panel-notes">Same photos, two ways of keeping them. A landmark map keeps a feature descriptor for every keypoint of every photo, plus 3D points. For these <span data-num="map_photos"></span> photos, the paper's formula gives <span data-num="p02_lm_disk_mb"></span> megabytes with DISK features and <span data-num="p02_lm_sp_mb"></span> with SuperPoint. OpenNavMap keeps the photos, where each was taken and the links, and keeps no 3D of its own: <span data-num="p02_ours_mb"></span> megabytes, measured. With the keypoint counts we measured on this dataset the landmark maps come to <span data-num="p02_lm_disk_mb_measured_kp"></span> and <span data-num="p02_lm_sp_mb_measured_kp"></span> megabytes, still <span data-num="p02_ratio_sp_measured_kp"></span> to <span data-num="p02_ratio_disk"></span> times larger. If you ask: the baseline itself registered 55,671 photos, one every 0.25 metres, which would be about 66,900 and 45,000 megabytes; its descriptor files were deleted after the run, so these figures are computed from the keypoint counts, not read from disk. Not counted on either side: 3D points and match files for the baseline, our graph files and retrieval descriptors, about 17 megabytes. The one fixed cost on our side is the <span data-num="mast3r_weights_gb"></span> gigabyte pretrained model, the blue segment after our green bar, drawn to the same scale. Even with it counted, our total stays below both landmark maps for this region, and it does not grow as the map does.</aside>
+</section>
+
+<!-- P03 -->
+<section class="panel" id="p03" data-chapter="2" data-talk-seconds="60" data-toc="Topometric map">
+  <div class="eyebrow"><span>04</span> / Topometric map</div>
+  <h2 class="panel-title">A topometric map without storing 3D landmarks</h2>
+  <p class="panel-desc">Nodes: images and poses. Edges: relations. Local 3D is inferred on demand.</p>
+  <div class="stage" role="img" aria-label="Left: a top-down view, to scale with a 2 m bar, of the real trajectories of submaps 36 and 20, recorded 17 days apart, around the spot where they meet; three nodes of each carry their photos. The middle photos show the same lab door, and a green dashed inter-submap edge joins those two nodes, 2.3 m apart. Right: those two matched photos, the 3D a geometric foundation model infers from them, and the two recovered cameras.">
+    <div class="stage-inner">
+      <div class="p03-head" data-narrow="hide" style="left:96px;top:176px"><b>Stored in the map</b>images · poses · edges</div>
+      <svg class="p03-walk" id="p03-walk" style="left:0;top:0" width="1920" height="1080" viewBox="0 0 1920 1080" aria-hidden="true">
+        <g clip-path="url(#p03-clip)">
+          <g id="p03-lines" fill="none" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"></g>
+          <g id="p03-trk" fill="var(--gray-2)"></g>
+        </g>
+        <g id="p03-stems" fill="none" stroke="var(--muted-fg)" stroke-width="2" stroke-dasharray="2 6" stroke-linecap="round"></g>
+        <path id="p03-match" d="" fill="none" stroke="var(--accent)" stroke-width="4" stroke-dasharray="10 7"/>
+        <g id="p03-dots" fill="var(--fg)" stroke="var(--surface)" stroke-width="3"></g>
+        <path id="p03-bar" d="" fill="none" stroke="var(--fg)" stroke-width="3"/>
+      </svg>
+      <div id="p03-photos"></div>
+      <div class="st-tag" data-narrow="hide" style="left:96px;top:296px">Submap 36</div>
+      <div class="st-tag" data-narrow="hide" style="left:96px;top:924px">Submap 20</div>
+      <div class="p03-chip p03-bar-lab" id="p03-bar-lab" data-narrow="hide" style="transform:translateX(-50%)">2 m</div>
+      <div class="p03-chip" data-narrow="hide" style="right:920px;top:296px"><span data-num="p03_match_a_time"></span></div>
+      <div class="p03-chip" data-narrow="hide" style="right:920px;top:924px"><span data-num="p03_match_b_time"></span></div>
+      <div class="legend" data-narrow="hide" style="left:96px;top:978px"><span class="sw"></span>submap 36 <span class="sw sw-w20"></span>submap 20 <span class="sw sw-green"></span>inter-submap edge <span class="sw-node"></span>node</div>
+
+      <div class="vrule" style="left:1040px;top:176px;height:840px"></div>
+      <div class="p03-head" data-narrow="hide" style="left:1080px;top:176px;width:744px"><b>Inferred on demand</b>image pair → local 3D → relative pose</div>
+      <img class="p03-mf" src="media/stills/photos/p03_r2_a.jpg" alt="Photo A: a lab door with red tool cabinets, the matched photo of piece 36" width="360" height="203" style="left:1080px;top:296px">
+      <img class="p03-mf" src="media/stills/photos/p03_r2_b.jpg" alt="Photo B: the same door from another position, the matched photo of piece 20" width="360" height="203" style="left:1464px;top:296px">
+      <div class="st-tag" data-narrow="hide" style="left:1080px;top:516px">Submap 36</div>
+      <div class="st-tag st-tag-g" data-narrow="hide" style="left:1464px;top:516px">Submap 20</div>
+      <svg class="p03-arrow" style="left:1440px;top:546px" width="24" height="44" viewBox="0 0 24 44" aria-hidden="true"><path d="M12 2 V38 M4 28 L12 40 L20 28" fill="none" stroke="var(--muted-fg)" stroke-width="2.5"/></svg>
+      <canvas id="p03-cloud" style="left:1080px;top:596px" width="744" height="320"></canvas>
+      <div class="cloud-cap" data-narrow="hide" style="left:1080px;top:930px">baseline <span data-num="p03_offset_m"></span> m · pose error <span data-num="p03_pose_err_m"></span> m, <span data-num="p03_pose_err_deg"></span>°<br>Map-Free threshold: <span data-num="p03_pass_mark"></span> · model: MASt3R</div>
+    </div>
+  </div>
+  <p class="fig-cap">Follow the green dashes: the two lab-door photos they join are the ones on the right. A <b>geometric foundation model</b> (a pretrained network that turns two photos into a 3D point for every pixel) makes their 3D once, to measure the offset; then the 3D is dropped. Error is measured against ground truth.</p>
+  <div class="narrow-copy">
+    <ul class="nc-rows">
+      <li><b>The map keeps</b><span>photos, where each was taken, and links between them. The two grey lines are the real paths of two submaps recorded 17 days apart, drawn to scale; the green dashes join two nodes that see the same lab door.</span></li>
+      <li><b>Made on demand</b><span>3D from just two photos of the map, inferred by a geometric foundation model, used to measure their offset, then dropped. Shown for the matched pair on the left, one hand-picked example: the cameras are <span data-num="p03_offset_m"></span> m apart; the model is off by <span data-num="p03_pose_err_m"></span> m and <span data-num="p03_pose_err_deg"></span>° (the paper's Map-Free test counts a pose within <span data-num="p03_pass_mark"></span> as correct).</span></li>
+    </ul>
+  </div>
+  <div class="panel-src">Region R2 · one hand-picked pair</div>
+  <aside class="panel-notes">Here is the idea. The map keeps photos, where each was taken, and links between them. These two grey lines are the real paths of two submaps, recorded 17 days apart, drawn to scale around the spot where they meet. The green dashes mark an edge the system found between two nodes about two metres apart: the same lab door. No 3D landmarks are stored. To align two photos we ask a geometric foundation model: a pretrained network that takes two photos and returns a 3D point for every pixel. On the right are exactly those two photos, the 3D the model predicts and the two cameras it recovers. One hand-picked pair, not typical accuracy: the cameras stand <span data-num="p03_offset_m"></span> metres apart and the estimate is off by <span data-num="p03_pose_err_m"></span> metres and <span data-num="p03_pose_err_deg"></span> degrees, inside the paper's Map-Free pass mark of <span data-num="p03_pass_mark"></span>. That 3D is used once, then dropped.</aside>
+</section>
+
+<!-- P04 -->
+<section class="panel" id="p04" data-chapter="2" data-talk-seconds="75" data-toc="System pipeline" data-max-step="5">
+  <div class="eyebrow"><span>04</span> / System pipeline</div>
+  <h2 class="panel-title">The OpenNavMap pipeline</h2>
+  <p class="panel-desc">Five modules, from distributed acquisition to visual navigation (paper Fig. 2).</p>
+  <div class="stage" role="img" aria-label="Five blocks from left to right, with arrows. 1 Capture: four photos of one street, from smart glasses, a phone, Street View and glasses at night. 2 One piece: the same five photos linked three ways: which photos see the same place, how one piece moved, where a robot may go. 3 Join: two look-alike photos, the 3D a geometric foundation model infers from them, and two chains of poses re-balanced; that 3D is not kept. 4 Maintain: redundant photos are dropped and links refreshed. 5 Navigate: a goal photo in, the legged robot driving there. A dashed arrow labelled Future work: self-improving map collection runs from Navigate back to Capture.">
+    <div class="stage-inner p04" id="p04-inner" data-hl="0">
+      <svg class="p04-flow" style="left:0;top:0" width="1920" height="1080" viewBox="0 0 1920 1080" aria-hidden="true">
+        <defs><marker id="p04-head" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M1 1 L11 6 L1 11" fill="none" stroke="var(--muted-fg)" stroke-width="2"/></marker></defs>
+        <g stroke="var(--muted-fg)" stroke-width="2" fill="none" marker-end="url(#p04-head)">
+          <path d="M398 550 H426"/><path d="M736 550 H764"/><path d="M1154 550 H1182"/><path d="M1492 550 H1520"/>
+        </g>
+        <path class="p04-back" d="M1676 870 V918 H244 V880" fill="none" stroke="var(--muted-fg)" stroke-width="2" stroke-dasharray="12 10" marker-end="url(#p04-head)"/>
+      </svg>
+      <div class="p04-next" data-narrow="hide" style="left:880px;top:904px">Future work: self-improving map collection</div>
+
+      <div class="p04-blk" data-blk="1" style="left:96px;top:230px;width:296px">
+        <div class="p04-h" data-narrow="hide"><span>1</span>Distributed Acquisition and Preprocess</div>
+        <ul class="p04-dev">
+          <li><img src="media/stills/photos/p02_east_village_20241222.jpg" alt="A street seen through smart glasses" width="256" height="144"><span data-narrow="hide">Aria glasses</span></li>
+          <li><img src="media/stills/photos/p02_east_village_phone1.jpg" alt="The same street from a phone" width="256" height="144"><span data-narrow="hide">Smartphone</span></li>
+          <li><img src="media/stills/photos/p04_streetview.jpg" alt="The same street in Street View" width="256" height="144"><span data-narrow="hide">Street View</span></li>
+          <li><img src="media/stills/photos/p04_night.jpg" alt="The same street through glasses at night" width="256" height="144"><span data-narrow="hide">Night</span></li>
+        </ul>
+      </div>
+
+      <div class="p04-blk" data-blk="2" style="left:434px;top:230px;width:296px">
+        <div class="p04-h" data-narrow="hide"><span>2</span>Three-Layer Shared-Node Submap</div>
+        <div class="p04-line" data-narrow="hide">Nodes: image keyframes</div>
+        <div class="p04-layers">
+          <div class="p04-layer"><svg id="p04-l-covis" width="256" height="64" viewBox="0 0 256 64" aria-hidden="true"></svg><span class="c-covis" data-narrow="hide">Covisibility graph</span></div>
+          <div class="p04-layer"><svg id="p04-l-odom" width="256" height="64" viewBox="0 0 256 64" aria-hidden="true"></svg><span class="c-odom" data-narrow="hide">Odometry graph</span></div>
+          <div class="p04-layer"><svg id="p04-l-trav" width="256" height="64" viewBox="0 0 256 64" aria-hidden="true"></svg><span class="c-trav" data-narrow="hide">Traversability graph</span></div>
+        </div>
+      </div>
+
+      <div class="p04-blk p04-join" data-blk="3" style="left:772px;top:230px;width:376px">
+        <div class="p04-h" data-narrow="hide"><span>3</span>Hierarchical Multi-Session Visual Localization</div>
+        <div class="p04-sub">
+          <div class="p04-pair"><img src="media/stills/photos/p03_r2_a.jpg" alt="A lab door, photo from one piece" width="164" height="92"><img src="media/stills/photos/p03_r2_b.jpg" alt="The same door, photo from another piece" width="164" height="92"></div>
+          <div class="p04-act" data-narrow="hide">Topological localization</div>
+        </div>
+        <div class="p04-sub">
+          <div class="p04-cloud"><canvas id="p04-cloud" width="336" height="145" aria-hidden="true"></canvas></div>
+          <div class="p04-act" data-narrow="hide">Metric localization</div>
+        </div>
+        <div class="p04-sub">
+          <svg id="p04-pgo" width="336" height="64" viewBox="0 0 336 64" aria-hidden="true"></svg>
+          <div class="p04-act" data-narrow="hide">Pose graph optimization</div>
+        </div>
+      </div>
+
+      <div class="p04-blk" data-blk="4" style="left:1190px;top:230px;width:296px">
+        <div class="p04-h" data-narrow="hide"><span>4</span>Lifelong Map Maintenance</div>
+        <div class="p04-line" data-narrow="hide">Node culling · edge updating</div>
+        <svg id="p04-maint" width="256" height="300" viewBox="0 0 256 300" aria-hidden="true"></svg>
+      </div>
+
+      <div class="p04-blk" data-blk="5" style="left:1528px;top:230px;width:296px">
+        <div class="p04-h" data-narrow="hide"><span>5</span>Visual Navigation</div>
+        <div class="p04-line" data-narrow="hide">Image-goal navigation</div>
+        <div class="p04-nav">
+          <img src="media/stills/photos/p04_goal.jpg" alt="A goal photo: the lab's front gate" width="256" height="144">
+          <svg width="24" height="36" viewBox="0 0 24 36" aria-hidden="true"><path d="M12 2 V30 M4 22 L12 32 L20 22" fill="none" stroke="var(--muted-fg)" stroke-width="2.5"/></svg>
+          <img src="media/nav/lab_robot.jpg" alt="The legged robot in the lab" width="256" height="144">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="step-row" role="group" aria-label="Pipeline steps">
+    <button type="button" class="step-chip step-all" data-p04-step="0" aria-pressed="true">All</button>
+    <button type="button" class="step-chip" data-p04-step="1" aria-pressed="false"><span>1</span><i>Acquisition</i></button>
+    <button type="button" class="step-chip" data-p04-step="2" aria-pressed="false"><span>2</span><i>Submap</i></button>
+    <button type="button" class="step-chip" data-p04-step="3" aria-pressed="false"><span>3</span><i>Localization</i></button>
+    <button type="button" class="step-chip" data-p04-step="4" aria-pressed="false"><span>4</span><i>Maintenance</i></button>
+    <button type="button" class="step-chip" data-p04-step="5" aria-pressed="false"><span>5</span><i>Navigation</i></button>
+    <span class="step-nav">
+      <button type="button" class="step-btn" data-p04-nav="-1" aria-label="Previous step">&larr; Prev</button>
+      <button type="button" class="step-btn" data-p04-nav="1" aria-label="Next step">Next &rarr;</button>
+    </span>
+  </div>
+  <p class="fig-cap">All five blocks show at full strength; pick a step to bring one forward. 3D appears only inside Join, for one pair of photos, and is gone before the map is saved. <span class="fig-note">Paper terms: 1 distributed acquisition · 2 three-layer shared-node submap (same place = covisibility, odometry, traversability) · 3 topological localization, metric localization, pose graph optimization · 4 node culling, edge updating · 5 image-goal visual navigation.</span></p>
+  <div class="narrow-copy">
+    <ol class="nc-rows nc-p04">
+      <li><b>1 Capture</b><span>Any camera: smart glasses, phone, Street View, day or night.</span>
+        <div class="nc-thumbs"><img src="media/stills/photos/p02_east_village_20241222.jpg" alt="" width="112" height="63"><img src="media/stills/photos/p02_east_village_phone1.jpg" alt="" width="112" height="63"><img src="media/stills/photos/p04_streetview.jpg" alt="" width="112" height="63"><img src="media/stills/photos/p04_night.jpg" alt="" width="112" height="63"></div></li>
+      <li><b>2 One piece</b><span>Photos linked three ways: same place, odometry, traversable.</span></li>
+      <li><b>3 Join</b><span>Find look-alike photos, measure their offset, re-balance poses.</span>
+        <div class="nc-thumbs"><img src="media/stills/photos/p03_r2_a.jpg" alt="" width="112" height="63"><img src="media/stills/photos/p03_r2_b.jpg" alt="" width="112" height="63"></div></li>
+      <li><b>4 Maintain</b><span>Drop duplicates, refresh links.</span></li>
+      <li><b>5 Navigate</b><span>Goal photo in; the legged robot drives there.</span>
+        <div class="nc-thumbs"><img src="media/stills/photos/p04_goal.jpg" alt="" width="112" height="63"><img src="media/nav/lab_robot.jpg" alt="" width="112" height="63"></div></li>
+      <li><b>Future work</b><span>Robot logs become new captures: self-improving map collection.</span></li>
+    </ol>
+  </div>
+  <div class="panel-src">Redrawn from paper Fig. 2</div>
+  <aside class="panel-notes">This is the whole pipeline, as in the paper's Fig. 2. Anyone records the place with any camera. Each piece keeps its photos, linked three ways: same place seen, how it moved, where a robot may go. To join a new piece we find look-alike photos, let a geometric foundation model measure their offset, then re-balance the poses. That 3D is never stored. The map then drops redundant photos, and a robot navigates from a goal photo. Future work: the robot's own logs feed back in, a self-improving map collection.</aside>
+</section>
+
+<!-- P04b: topological localization (paper Sec. V-B1, Tab. II) -->
+<section class="panel" id="p04b" data-chapter="3" data-talk-seconds="30" data-toc="Topological localization">
+  <div class="eyebrow"><span>05</span> / Topological localization</div>
+  <h2 class="panel-title">Topological localization: VPR, sequence matching, geometric verification</h2>
+  <p class="panel-desc">Match each query node to a reference node at the same place.</p>
+  <div class="stage" role="img" aria-label="Left, top: three night query images above the daytime reference images they were matched to. Left, bottom: difference matrices with ground-truth matches in green, and SeqSLAM matches and the proposed DP-based sequence matches in red. Right: paired bars for reference sequence 0, solid for Precision@1 and striped for Recall@1: SingleMatch 96 and 63, SeqSLAM 96 and 58, DP (ours) 97 and 75 percent.">
+    <div class="stage-inner">
+      <div class="r4-fig-label" data-narrow="hide" style="left:96px;top:170px">Night query ↔ day reference</div>
+      <img class="r6-fig" style="left:96px;top:208px;width:960px;height:399px" src="media/stills/supp/topo_pairs3.jpg" width="852" height="354" alt="Three night query images, each above the daytime reference image it was matched to at the same place" loading="lazy">
+      <div class="r4-fig-label" data-narrow="hide" style="left:96px;top:628px">Difference matrices: ground truth (green), matches (red)</div>
+      <img class="r6-fig" style="left:96px;top:666px;width:960px;height:318px" src="media/stills/supp/topo_matrix3.jpg" width="858" height="284" alt="Three difference matrices of query index against reference index: ground-truth matches in green, SeqSLAM matches and the proposed DP matches in red; the proposed path follows the ground truth across a gap" loading="lazy">
+      <div class="r7-rec" data-narrow="hide" style="left:1136px;top:372px;width:688px">
+        <div class="r7-rec-k">Ref. 0 [%]</div>
+        <div class="r7-key"><span><i class="p"></i>Precision@1</span><span><i class="r"></i>Recall@1</span></div>
+        <div class="r7-grp m-single"><span>SingleMatch</span><div class="r7-pair"><div><i class="p" style="width:384px"></i><b data-num="p04b_p1_single"></b></div><div><i class="r" style="width:252px"></i><b data-num="p04b_r1_single"></b></div></div></div>
+        <div class="r7-grp m-seqslam"><span>SeqSLAM</span><div class="r7-pair"><div><i class="p" style="width:384px"></i><b data-num="p04b_p1_seqslam"></b></div><div><i class="r" style="width:232px"></i><b data-num="p04b_r1_seqslam"></b></div></div></div>
+        <div class="r7-grp m-dp ours"><span>DP (Ours)</span><div class="r7-pair"><div><i class="p" style="width:388px"></i><b data-num="p04b_p1_dp"></b></div><div><i class="r" style="width:300px"></i><b data-num="p04b_r1_dp"></b></div></div></div>
+        <div class="r7-rec-note">Similar precision; DP gains recall by jumping gaps.</div>
+      </div>
+    </div>
+  </div>
+  <p class="fig-cap">Matched image pairs and difference matrices from the supplementary material (Fig. 3, 10). Numbers: Tab. II, CosPlace descriptors with geometric verification (GV) on the self-collected dataset (R2), reference sequence 0. Bar colour is the method; solid is Precision@1, striped is Recall@1; a match is correct within [7.5 m, 75°].</p>
+  <div class="narrow-copy">
+    <ul class="nc-rows">
+      <li><b>Recall@1, DP (Ours): 75 / 40 / 48 / 62</b><span>SeqSLAM 58 / 30 / 32 / 56 · SingleMatch 63 / 30 / 34 / 34</span></li>
+      <li><b>Precision@1, DP (Ours): 97 / 78 / 92 / 97</b><span>SeqSLAM 96 / 82 / 88 / 100 · SingleMatch 96 / 75 / 92 / 99</span></li>
+      <li><b>CosPlace with GV, R2, Ref. 0 to 3</b><span>a match is correct within [7.5 m, 75°]</span></li>
+    </ul>
+  </div>
+  <div class="panel-src">Paper Tab. II</div>
+  <aside class="panel-notes">Topological localization asks whether a query node matches a reference node at the same place. It runs in three stages: visual place recognition retrieves candidates by global descriptor, sequence matching searches a path through the difference matrix, and geometric verification rejects false positives. On the left, night queries matched to daytime reference images, and the difference matrices where the matching path is searched. In Table II, for CosPlace with verification on four reference sequences of our dataset, precision is at least 75 percent for all three matching schemes. On sequence 0, shown on the right, precision is 96 to 97 percent for all three, so the gain of our DP-based matching shows in recall: 75 against 58 for SeqSLAM and 63 for single matching, because it can jump across gaps in the overlap.</aside>
+</section>
+
+<!-- P04b2: topological localization, matched nodes across sessions (supplementary Fig. 6, our video) -->
+<section class="panel" id="p04b2" data-chapter="3" data-talk-seconds="30" data-toc="Matched places">
+  <div class="eyebrow"><span>05</span> / Topological localization</div>
+  <h2 class="panel-title">Topological localization: matched nodes across sessions</h2>
+  <p class="panel-desc">Each query session finds its matched nodes in the reference session.</p>
+  <div class="stage" role="img" aria-label="Top: five query trajectories in red above the grey reference trajectory, with green markers and lines joining each matched node. Bottom left: video of query and matched reference images, then path search on the difference matrix and geometric verification. Bottom right: the three stages, retrieve, sequence match, verify.">
+    <div class="stage-inner" data-r4-group="all">
+      <div class="r4-fig-label" data-narrow="hide" style="left:96px;top:170px">Query (red) ↔ matched reference nodes (green), five sessions</div>
+      <img class="r6-fig" style="left:96px;top:208px;width:1728px;height:251px" src="media/stills/supp/topo_traj.jpg" width="1420" height="206" alt="Five query trajectories in red above the grey reference trajectory, with green lines joining matched nodes" loading="lazy">
+      <div class="r4-lbl" data-narrow="hide" style="left:96px;top:490px">Our video <span>1x</span></div>
+      <video class="r4v" style="left:96px;top:528px;width:880px;height:495px" muted playsinline loop preload="metadata" poster="media/nav/r5a_topo_loc.jpg" src="media/nav/r5a_topo_loc.mp4" aria-label="Topological localization: query image beside the matched reference image, then path search on the difference matrix and geometric verification, real speed"></video>
+      <ol class="r7-steps" data-narrow="hide" style="left:1036px;top:540px;width:788px">
+        <li><b>1</b>Retrieve candidates by global descriptor</li>
+        <li><b>2</b>Search a path through the difference matrix</li>
+        <li><b>3</b>Verify geometry, reject false matches</li>
+      </ol>
+      <div class="r4-ctl" data-narrow="hide" style="left:1036px;top:972px;width:788px">
+        <button type="button" class="p08-btn" data-r4="toggle">Play</button>
+        <div class="p08-track"><input type="range" data-r4="seek" min="0" max="1000" value="0" step="1" aria-label="Timeline of the topological localization video"></div>
+        <span class="p08-time tnum" data-r4="time">0:00 / 0:23</span>
+      </div>
+    </div>
+  </div>
+  <p class="fig-cap">Top: query and reference trajectories of five sessions on the self-collected dataset (R2), matched nodes joined (supplementary Fig. 6; a match is correct within [7.5 m, 75°]). Bottom: query and matched reference images, path search on the difference matrix, then geometric verification (our video, real speed).</p>
+  <div class="narrow-copy">
+    <ul class="nc-rows">
+      <li><b>Five query sessions, one reference</b><span>matched nodes joined across sessions</span></li>
+      <li><b>Retrieve, sequence match, verify</b><span>the three stages shown in the video</span></li>
+    </ul>
+  </div>
+  <div class="anim-ctl" role="group" aria-label="Video controls">
+    <button type="button" class="btn btn-sm" data-r4="toggle">Play</button>
+    <span class="anim-note">The video plays at real speed.</span>
+  </div>
+  <div class="panel-src">Supplementary Fig. 6</div>
+  <aside class="panel-notes">Across sessions recorded on different days, each query node finds its matched node in the reference session, shown as green links between the red query and grey reference trajectories. The video runs the three stages on one query: retrieve candidates, search a path through the difference matrix, and verify the geometry.</aside>
+</section>
+
+<!-- P04c: metric localization (paper Sec. V-B2, Fig. 11a) -->
+<section class="panel" id="p04c" data-chapter="3" data-talk-seconds="45" data-toc="Metric localization">
+  <div class="eyebrow"><span>05</span> / Metric localization</div>
+  <h2 class="panel-title">Metric localization: relative pose estimation from reference images</h2>
+  <p class="panel-desc">Estimate the 6-DoF query pose from a few reference images.</p>
+  <div class="stage" role="img" aria-label="Left: paper figure 11(a), Precision of metric localization on the Map-Free dataset against the number of reference images, for HLoc, VPR and geometric foundation model methods. Right: video of a query image, its reference images and the 3D reconstruction built on demand for pose estimation.">
+    <div class="stage-inner" data-r4-group="all">
+      <div class="r4-fig-label" data-narrow="hide" style="left:96px;top:170px">Map-Free · 65 scenes · Precision@[100 cm, 10°]</div>
+      <div class="r4-fig" style="left:96px;top:216px;width:840px"><img src="media/stills/r5a/fig11a_mapfree.jpg" alt="Paper Fig. 11(a): Precision at 100 cm and 10 degrees against the number of reference images on the Map-Free dataset" width="845" height="670"></div>
+      <div class="r4-stats r5a-stats" data-narrow="hide" style="left:968px;top:790px;width:856px">
+        <div><b>&gt;80%</b><span>Ours, 2 reference images</span></div>
+        <div><b>&gt;50</b><span>images for HLoc (DISK+LG)</span></div>
+      </div>
+      <div class="r4-lbl" data-narrow="hide" style="left:968px;top:170px">Our video <span>1x</span></div>
+      <video class="r4v" style="left:968px;top:216px;width:856px;height:481px" muted playsinline loop preload="metadata" poster="media/nav/r5a_metric_loc.jpg" src="media/nav/r5a_metric_loc.mp4" aria-label="Metric localization: a query image and its reference images with the 3D reconstruction built on demand for pose estimation, real speed"></video>
+      <div class="r4-ctl" data-narrow="hide" style="left:968px;top:712px;width:856px">
+        <button type="button" class="p08-btn" data-r4="toggle">Play</button>
+        <div class="p08-track"><input type="range" data-r4="seek" min="0" max="1000" value="0" step="1" aria-label="Timeline of the metric localization video"></div>
+        <span class="p08-time tnum" data-r4="time">0:00 / 0:13</span>
+      </div>
+    </div>
+  </div>
+  <p class="fig-cap">Left: Fig. 11(a), Precision@[100 cm, 10°] against the number of reference images on the Map-Free dataset; Ours adds confidence map calibration to the global optimization of a geometric foundation model. Right: query and reference images with the on-demand 3D reconstruction (our video, real speed).</p>
+  <div class="narrow-copy">
+    <ul class="nc-rows">
+      <li><b>Over 80% Precision@[100 cm, 10°]</b><span>Ours on Map-Free, with 2 reference images</span></li>
+      <li><b>More than 50 reference images</b><span>needed by HLoc (DISK+LG) for comparable precision</span></li>
+    </ul>
+  </div>
+  <div class="anim-ctl" role="group" aria-label="Video controls">
+    <button type="button" class="btn btn-sm" data-r4="toggle">Play</button>
+    <span class="anim-note">The video plays at real speed.</span>
+  </div>
+  <div class="panel-src">Paper Fig. 11(a), Map-Free dataset</div>
+  <aside class="panel-notes">Once a query node is matched, metric localization estimates its 6-DoF pose relative to a few reference images. A geometric foundation model reconstructs the scene on demand from the images alone, and our confidence map calibration refines its global optimization. On the Map-Free benchmark our method exceeds 80 percent precision within one metre and ten degrees with only two reference images, while HLoc with DISK and LightGlue needs more than fifty for comparable precision. With fourteen or more views all such models decline, which the paper reports as a limitation.</aside>
+</section>
+
+<!-- P05 -->
+<section class="panel" id="p05" data-chapter="3" data-talk-seconds="100" data-toc="Merging: UCL campus" data-max-step="5">
+  <div class="eyebrow"><span>05</span> / Map merging</div>
+  <h2 class="panel-title">Incremental map merging: <span data-num="r2_pieces"></span> submaps over <span data-num="r2_days"></span> days</h2>
+  <p class="panel-desc">Green: new submap. Red: its matches. Grey: merged map. Blue: not yet merged.</p>
+  <div class="stage" role="img" aria-label="Animation: the UCL campus map built from 55 pieces merged one at a time. Each new piece appears in green in its own coordinate frame, in a box on the right. Red lines then join its photos to the map photos they matched, with the count and the best photo pair. Last, the pose optimisation moves the piece onto the grey map while the map shifts slightly; its own-frame copy stays in the box. A piece with no match stays a separate blue island until a later piece joins it. A counter shows the piece number and the RMS error against ground truth, which ends at 1.78 m; at the end three result cards appear on the right, above the photo pair of the last step.">
+    <div class="stage-inner">
+      <canvas class="merge-canvas" id="p05-canvas" style="left:0;top:0" width="1920" height="1080"></canvas>
+      <div class="counter" data-narrow="hide" style="left:96px;top:176px"><span class="c-k">Submap</span> <span class="tnum" id="p05-piece">55</span> / <span data-num="r2_pieces"></span><span class="c-sep">·</span><span class="c-k">ATE (RMSE)</span> <span class="tnum" id="p05-rms"></span> m</div>
+      <div class="p05-strip-label" id="p05-strip-label" data-narrow="hide" style="left:96px;top:1036px"></div>
+      <div class="p05-frame" id="p05-f0" style="left:96px;top:922px" role="img" aria-label="Photo 1 of 6 from the piece being added"></div>
+      <div class="p05-frame" id="p05-f1" data-narrow="hide" style="left:286px;top:922px" role="img" aria-label="Photo 2 of 6 from the piece being added"></div>
+      <div class="p05-frame" id="p05-f2" style="left:476px;top:922px" role="img" aria-label="Photo 3 of 6 from the piece being added"></div>
+      <div class="p05-frame" id="p05-f3" data-narrow="hide" style="left:666px;top:922px" role="img" aria-label="Photo 4 of 6 from the piece being added"></div>
+      <div class="p05-frame" id="p05-f4" style="left:856px;top:922px" role="img" aria-label="Photo 5 of 6 from the piece being added"></div>
+      <div class="p05-frame" id="p05-f5" data-narrow="hide" style="left:1046px;top:922px" role="img" aria-label="Photo 6 of 6 from the piece being added"></div>
+      <div class="scalebar" data-narrow="hide" style="left:1404px;top:972px"><i id="p05-scalebar-line"></i><span><span class="tnum" id="p05-scalebar-m"></span> m</span></div>
+      <div class="p05-procui p05-chips" data-narrow="hide" style="left:1404px;top:236px;width:420px">
+        <div class="p05-chip"><span>1</span>New submap</div>
+        <div class="p05-chip"><span>2</span><b id="p05-chip2-txt">Visual localization</b></div>
+        <div class="p05-chip"><span>3</span>Pose graph optimization</div>
+      </div>
+      <div class="p05-ncorr tnum" id="p05-ncorr" data-narrow="hide" style="left:1404px;top:404px"></div>
+      <div class="p05-procui p05-inset" style="left:1404px;top:452px;width:420px;height:260px"><span data-narrow="hide">local frame</span></div>
+      <div class="p05-pair off" id="p05-pair" data-narrow="hide" style="left:1404px;top:736px;width:420px">
+        <figure><img id="p05-pair-new" alt="Photo from the new piece" width="205" height="115"><figcaption>query</figcaption></figure>
+        <figure><img id="p05-pair-map" alt="Matched photo already in the map" width="205" height="115"><figcaption>reference</figcaption></figure>
+      </div>
+      <div class="p05-cards" data-narrow="hide" style="left:1404px;top:250px;width:420px">
+        <div class="card">
+          <div class="card-num"><span data-num="r2_rms_all_orders_m"></span> m</div>
+          <div class="card-label">ATE (RMSE), <span data-num="r2_orders"></span> merging orders</div>
+        </div>
+        <div class="card">
+          <div class="card-num"><span data-num="r2_pieces"></span> / <span data-num="r2_pieces"></span></div>
+          <div class="card-label">submaps merged in <span data-num="r2_orders_shuffled"></span> shuffled orders · <span data-num="r2_pieces_merged_inorder"></span> / <span data-num="r2_pieces"></span> in order (<span data-num="r2_rms_inorder_m"></span> m)</div>
+        </div>
+        <div class="card">
+          <div class="card-num"><span data-num="baseline_dropped"></span></div>
+          <div class="card-label">submaps missed by the HLoc + COLMAP baseline</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="fig-cap">Each new piece (green) arrives in its own coordinate frame (box on the right). Red lines join its photos to the map photos they matched; then pose optimisation moves it onto the grey map and nudges the map. A piece with no match yet stays a blue island until a later piece joins it. <span data-num="r2_recordings"></span> recordings were cut into <span data-num="r2_pieces"></span> pieces of at most <span data-num="r2_piece_max_m"></span> m. RMS error is measured against ground truth (the glasses vendor's cloud mapping).</p>
+  <div class="anim-ctl p05-ctl" role="group" aria-label="Merge animation controls">
+    <button type="button" class="btn btn-sm" id="p05-toggle" aria-pressed="false">Play</button>
+    <button type="button" class="btn btn-sm" id="p05-prev" aria-label="Previous merge step">&#9664;</button>
+    <button type="button" class="btn btn-sm" id="p05-next" aria-label="Next merge step">&#9654;</button>
+    <input type="range" id="p05-slider" min="1" max="55" value="55" aria-label="Merge step">
+    <span class="p05-readout tnum" id="p05-readout"></span>
+  </div>
+  <div class="narrow-copy">
+    <ul class="nc-rows nc-cards">
+      <li><b><span data-num="r2_rms_all_orders_m"></span> m</b><span>RMS error over <span data-num="r2_orders"></span> merge orders (order shown: <span data-num="r4_rms_m"></span> m).</span></li>
+      <li><b><span data-num="r2_pieces"></span> / <span data-num="r2_pieces"></span></b><span>pieces joined in <span data-num="r2_orders_shuffled"></span> shuffled orders; <span data-num="r2_pieces_merged_inorder"></span> / <span data-num="r2_pieces"></span> in order (<span data-num="r2_rms_inorder_m"></span> m).</span></li>
+      <li><b><span data-num="baseline_dropped"></span></b><span>pieces a landmark-map pipeline (HLoc + COLMAP) failed to join.</span></li>
+    </ul>
+  </div>
+  <div class="panel-src">Paper Tab. VI, R2-4 · islands placed by ground truth for display</div>
+  <aside class="panel-notes">This is the main result, and how each merge works. One campus, recorded over <span data-num="r2_days"></span> days: <span data-num="r2_walk_km"></span> km on foot, cut into <span data-num="r2_pieces"></span> pieces and merged one at a time, here in a shuffled order. A new piece, in green, arrives in its own coordinate frame, shown in the box on the right. We find look-alike photos: the red lines join its photos to the map photos they matched. Pose optimisation then moves it onto the map, and the map shifts a little. Steps: piece 5 with 12 matches, piece 12 with 36, piece 3 with no match, which stays a blue island, and piece 38, after which the islands are joined again. The last step plays the whole run. The counter is the RMS error against ground truth from the glasses vendor's own cloud mapping. It ends at <span data-num="r4_rms_m"></span> metres; across <span data-num="r2_orders"></span> merge orders it stays between <span data-num="r2_rms_all_orders_m"></span> metres. A landmark-map pipeline failed to join <span data-num="baseline_dropped"></span> pieces.</aside>
+</section>
+
+<!-- P05b: Orders -->
+<section class="panel" id="p05b" data-chapter="3" data-talk-seconds="30" data-toc="Merging order">
+  <div class="eyebrow"><span>05</span> / Map merging</div>
+  <h2 class="panel-title">Robustness to the submap merging order</h2>
+  <p class="panel-desc">Nine shuffled orders of the same R2 submaps; ATE (RMSE) per order.</p>
+  <div class="stage" role="img" aria-label="Nine small maps of the UCL campus, one per shuffled merge order R2-0 to R2-8, drawn at the same scale and played together step by step. The merged map is grey; the piece added at the shown step is green, with red lines for its links to the map. Each map is labelled with its final RMS error from the paper: between 1.72 and 2.87 m. R2-4, the order shown on the previous panel, is outlined. All nine end as one connected map.">
+    <div class="stage-inner">
+      <canvas class="merge-canvas" id="p05b-canvas" style="left:0;top:0" width="1920" height="1080"></canvas>
+      <div class="ord-cell" style="left:96px;top:196px;width:470px;height:262px"><span class="ord-lab" data-narrow="hide">R2-0</span><span class="ord-err tnum" data-narrow="hide"><span data-num="orders_r0_m"></span> m</span></div>
+      <div class="ord-cell" style="left:578px;top:196px;width:470px;height:262px"><span class="ord-lab" data-narrow="hide">R2-1</span><span class="ord-err tnum" data-narrow="hide"><span data-num="orders_r1_m"></span> m</span></div>
+      <div class="ord-cell" style="left:1060px;top:196px;width:470px;height:262px"><span class="ord-lab" data-narrow="hide">R2-2</span><span class="ord-err tnum" data-narrow="hide"><span data-num="orders_r2_m"></span> m</span></div>
+      <div class="ord-cell" style="left:96px;top:466px;width:470px;height:262px"><span class="ord-lab" data-narrow="hide">R2-3</span><span class="ord-err tnum" data-narrow="hide"><span data-num="orders_r3_m"></span> m</span></div>
+      <div class="ord-cell hl" style="left:578px;top:466px;width:470px;height:262px"><span class="ord-lab" data-narrow="hide">R2-4</span><span class="ord-err tnum" data-narrow="hide"><span data-num="orders_r4_m"></span> m</span></div>
+      <div class="ord-cell" style="left:1060px;top:466px;width:470px;height:262px"><span class="ord-lab" data-narrow="hide">R2-5</span><span class="ord-err tnum" data-narrow="hide"><span data-num="orders_r5_m"></span> m</span></div>
+      <div class="ord-cell" style="left:96px;top:736px;width:470px;height:262px"><span class="ord-lab" data-narrow="hide">R2-6</span><span class="ord-err tnum" data-narrow="hide"><span data-num="orders_r6_m"></span> m</span></div>
+      <div class="ord-cell" style="left:578px;top:736px;width:470px;height:262px"><span class="ord-lab" data-narrow="hide">R2-7</span><span class="ord-err tnum" data-narrow="hide"><span data-num="orders_r7_m"></span> m</span></div>
+      <div class="ord-cell" style="left:1060px;top:736px;width:470px;height:262px"><span class="ord-lab" data-narrow="hide">R2-8</span><span class="ord-err tnum" data-narrow="hide"><span data-num="orders_r8_m"></span> m</span></div>
+      <div class="ord-side" data-narrow="hide" style="left:1554px;top:196px;width:270px">
+        <div class="counter" style="position:static"><span class="c-k">Step</span> <span class="tnum" id="p05b-step">55</span> / <span data-num="r2_pieces"></span></div>
+        <ul class="ord-key" style="margin-top:48px">
+          <li><i class="k-new"></i>new submap</li>
+          <li><i class="k-link"></i>its links to the map</li>
+          <li><i class="k-map"></i>merged map</li>
+        </ul>
+        <div class="ord-hl-key" style="margin-top:56px"><i></i>order shown on the previous slide</div>
+      </div>
+    </div>
+  </div>
+  <p class="fig-cap">The same <span data-num="r2_pieces"></span> pieces merged in nine shuffled orders, played in step. Grey: merged map; green: the piece added at the shown step; red: its links to the map. Each label is that order's final RMS error against ground truth, from the paper.</p>
+  <div class="anim-ctl ord-ctl" role="group" aria-label="Orders animation controls">
+    <button type="button" class="btn btn-sm" id="p05b-toggle" aria-pressed="false">Play</button>
+    <button type="button" class="btn btn-sm" id="p05b-prev" aria-label="Previous merge step">&#9664;</button>
+    <button type="button" class="btn btn-sm" id="p05b-next" aria-label="Next merge step">&#9654;</button>
+    <input type="range" id="p05b-slider" min="1" max="55" value="55" aria-label="Merge step">
+    <span class="p05-readout tnum" id="p05b-readout"></span>
+  </div>
+  <div class="narrow-copy">
+    <p>Maps left to right, top to bottom: R2-0 <span data-num="orders_r0_m"></span> m, R2-1 <span data-num="orders_r1_m"></span> m, R2-2 <span data-num="orders_r2_m"></span> m, R2-3 <span data-num="orders_r3_m"></span> m, R2-4 <span data-num="orders_r4_m"></span> m, R2-5 <span data-num="orders_r5_m"></span> m, R2-6 <span data-num="orders_r6_m"></span> m, R2-7 <span data-num="orders_r7_m"></span> m, R2-8 <span data-num="orders_r8_m"></span> m. R2-4 (outlined) is the order shown above.</p>
+  </div>
+  <div class="panel-src">Paper Tab. VI, R2-0 to R2-8 · islands placed by ground truth for display</div>
+  <aside class="panel-notes">Does the merge depend on the order the pieces come in? Here the same <span data-num="r2_pieces"></span> pieces are merged in nine shuffled orders, all played together. The green piece is the one added at this step, and the red lines are its links to the grey map. Different orders grow the map from different places, and islands appear and rejoin at different times, but every order ends as one connected map. The final errors stay between <span data-num="r2_rms_shuffled_m"></span> metres. The outlined one, R2-4, is the order shown on the previous panel. The recording order is also in the paper's table.</aside>
+</section>
+
+<!-- P05c: map merging on R0 and R1 (r5_exp_b) -->
+<section class="panel" id="p05c" data-chapter="3" data-talk-seconds="30" data-toc="Merging: Vineyard, HKUST">
+  <div class="eyebrow"><span>05</span> / Map merging</div>
+  <h2 class="panel-title">Incremental map merging on Vineyard and HKUST campus</h2>
+  <p class="panel-desc">In-order and shuffled submap orders on two smaller regions, against ground truth.</p>
+  <div class="stage" role="img" aria-label="Left: region R0, Vineyard, three trajectory plots from the paper's supplementary Fig. 12, in-order and two shuffled submap orders; the merged map (red) lies on the ground truth (dashed green). ATE 0.47 m / 0.70°, 0.65 m / 0.86° and 0.27 m / 0.50°. Right: region R1, HKUST campus, supplementary Fig. 13, same layout; ATE 1.18 m / 0.44°, 2.39 m / 1.15° and 1.27 m / 0.41°.">
+    <div class="stage-inner">
+      <div class="r5b-head" data-narrow="hide" style="left:96px;top:270px;width:840px"><b>R0</b>Vineyard · <span data-num="r0_length_km"></span> km · <span data-num="r0_span"></span></div>
+      <div class="r5b-fig" style="left:96px;top:320px;width:840px"><img src="media/stills/r5b/suppl_fig12_r0.png" alt="Supplementary Fig. 12: three trajectory plots of R0, in-order and shuffled orders R0-0 and R0-1, merged map in red over ground truth in dashed green" width="2107" height="674"></div>
+      <div class="r5b-ate" data-narrow="hide" style="left:96px;top:631px;width:840px">
+        <div class="r5b-ate-k">ATE · translation / rotation</div>
+        <div class="r5b-cells">
+          <div><span>In-order</span><b class="tnum"><span data-num="r0_ate_inorder_m"></span> m</b><i class="tnum"><span data-num="r0_ate_inorder_deg"></span>°</i></div>
+          <div><span>Shuffled R0-0</span><b class="tnum"><span data-num="r0_ate_s0_m"></span> m</b><i class="tnum"><span data-num="r0_ate_s0_deg"></span>°</i></div>
+          <div><span>Shuffled R0-1</span><b class="tnum"><span data-num="r0_ate_s1_m"></span> m</b><i class="tnum"><span data-num="r0_ate_s1_deg"></span>°</i></div>
+        </div>
+      </div>
+      <div class="r5b-head" data-narrow="hide" style="left:984px;top:270px;width:840px"><b>R1</b>HKUST campus · <span data-num="r1_length_km"></span> km · <span data-num="r1_span"></span></div>
+      <div class="r5b-fig" style="left:984px;top:320px;width:840px"><img src="media/stills/r5b/suppl_fig13_r1.png" alt="Supplementary Fig. 13: three trajectory plots of R1, in-order and shuffled orders R1-0 and R1-1, merged map in red over ground truth in dashed green" width="2140" height="680"></div>
+      <div class="r5b-ate" data-narrow="hide" style="left:984px;top:631px;width:840px">
+        <div class="r5b-ate-k">ATE · translation / rotation</div>
+        <div class="r5b-cells">
+          <div><span>In-order</span><b class="tnum"><span data-num="r1_ate_inorder_m"></span> m</b><i class="tnum"><span data-num="r1_ate_inorder_deg"></span>°</i></div>
+          <div><span>Shuffled R1-0</span><b class="tnum"><span data-num="r1_ate_s0_m"></span> m</b><i class="tnum"><span data-num="r1_ate_s0_deg"></span>°</i></div>
+          <div><span>Shuffled R1-1</span><b class="tnum"><span data-num="r1_ate_s1_m"></span> m</b><i class="tnum"><span data-num="r1_ate_s1_deg"></span>°</i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="fig-cap">Left: Vineyard (R0), supplementary Fig. 12. Right: HKUST campus (R1), supplementary Fig. 13. Merged map (red) against ground truth (dashed green), for the in-order and two shuffled submap orders. Below each plot: its absolute trajectory error (ATE) from Tab. VI. No submap is missing in any of these runs.</p>
+  <div class="narrow-copy">
+    <ul class="nc-rows">
+      <li><b>Vineyard (R0): <span data-num="r0_ate_inorder_m"></span> / <span data-num="r0_ate_s0_m"></span> / <span data-num="r0_ate_s1_m"></span> m</b><span>ATE in-order / shuffled R0-0 / R0-1; rotation <span data-num="r0_ate_inorder_deg"></span> / <span data-num="r0_ate_s0_deg"></span> / <span data-num="r0_ate_s1_deg"></span>°</span></li>
+      <li><b>HKUST campus (R1): <span data-num="r1_ate_inorder_m"></span> / <span data-num="r1_ate_s0_m"></span> / <span data-num="r1_ate_s1_m"></span> m</b><span>ATE in-order / shuffled R1-0 / R1-1; rotation <span data-num="r1_ate_inorder_deg"></span> / <span data-num="r1_ate_s0_deg"></span> / <span data-num="r1_ate_s1_deg"></span>°</span></li>
+    </ul>
+  </div>
+  <div class="panel-src">Paper Tab. VI · Suppl. Figs. 12–13</div>
+  <aside class="panel-notes">The same map merging also runs on the two smaller regions of our dataset. On the left is the Vineyard, <span data-num="r0_length_km"></span> km recorded within <span data-num="r0_span"></span>, with very repetitive rows. On the right is the HKUST campus, <span data-num="r1_length_km"></span> km over <span data-num="r1_span"></span>, by day and night. Each region is merged in order and in two shuffled submap orders. Red is the merged map, dashed green is ground truth. The error stays at or below <span data-num="r0_ate_s0_m"></span> metres on the Vineyard and <span data-num="r1_ate_s0_m"></span> metres on campus, and no submap is left out.</aside>
+</section>
+
+<!-- P07 -->
+<section class="panel" id="p07" data-chapter="3" data-talk-seconds="40" data-toc="Map maintenance">
+  <div class="eyebrow"><span>07</span> / Map maintenance</div>
+  <h2 class="panel-title">Lifelong map maintenance: node culling</h2>
+  <p class="panel-desc">Culling factors: image quality (IQA), information gain (IG), temporal difference (TD).</p>
+  <div class="stage" role="img" aria-label="Left: at one spot in a lab, a newer photo replaces an older one. Right: number of photos kept as recordings join, without removal and with three removal rules; the full rule keeps about 20 percent fewer.">
+    <div class="stage-inner">
+      <div class="r4-fig-label" style="left:96px;top:176px" data-narrow="hide">Node culling: replaced by a new node</div>
+      <div class="r4-fig" style="left:96px;top:218px;width:600px"><img src="media/stills/paper/fig6_replace.jpg" alt="A lab photo taken on 28 November 2024 replaces the photo of the same spot taken on 5 September 2024" width="760" height="867"></div>
+      <div class="r4-fig-label" style="left:740px;top:176px" data-narrow="hide">Nodes after culling vs. incoming nodes</div>
+      <div class="r4-fig" style="left:740px;top:218px;width:1084px"><img src="media/stills/paper/fig17a_nodes.jpg" alt="Line chart: photos kept in the map against incoming photos, for no removal and three removal rules" width="1500" height="716"></div>
+      <div class="r4-stats" style="left:740px;top:790px">
+        <div><b><span data-num="culling_photo_reduction_pct"></span>%</b><span data-narrow="hide">map size</span></div>
+        <div><b><span data-num="culling_rms_before_m"></span> → <span data-num="culling_rms_after_m"></span> m</b><span data-narrow="hide">translational ATE (Tab. VIII)</span></div>
+      </div>
+    </div>
+  </div>
+  <p class="fig-cap">Left: at one spot in the lab, a photo from 28 Nov 2024 replaces one from 5 Sep 2024. Right: photos kept as 16 lab recordings join over three months. Each curve adds one rule: image quality (IQA), how much new a photo shows (IG), and its age (TD).</p>
+  <div class="narrow-copy">
+    <ul class="nc-rows">
+      <li><b>About 20% fewer photos</b><span>with all three removal rules, on the lab recordings</span></li>
+      <li><b>Position error 0.105 → 0.116 m</b><span>the map stays almost as accurate</span></li>
+    </ul>
+  </div>
+  <div class="panel-src">Paper Fig. 6, 17 · Tab. VIII</div>
+  <aside class="panel-notes">A map that only grows becomes slow and stale, so after every merge the system also removes photos. Each photo gets a score from three things: how sharp it is, how much new it shows compared with its neighbours, and how old it is. On the left, a real case: a newer photo replaces the older photo of the same spot. On the right, the number of photos kept while sixteen lab recordings join over three months. The top line is with no removal; the bottom line uses all three rules and keeps about twenty percent fewer photos. Position error against ground truth moves from 0.105 to 0.116 metres.</aside>
+</section>
+
+<!-- P09: planning on the map, before the robot runs (r4_talk) -->
+<!-- P07b: from mapping to application (r6) -->
+<section class="panel" id="p07b" data-chapter="4" data-talk-seconds="25" data-toc="From map to navigation">
+  <div class="eyebrow"><span>12</span> / From map to navigation</div>
+  <h2 class="panel-title">From the map to image-goal navigation</h2>
+  <p class="panel-desc">Navigation system built on LiteVLoc [ICRA'2025]: plan, localize, follow.</p>
+  <div class="stage" role="img" aria-label="Four pictures in a row joined by arrows: the merged topometric map; global path planning on the traversability graph; visual localization in the map with LiteVLoc; image-goal navigation on the ANYmal-D legged robot.">
+    <div class="stage-inner">
+      <div class="r5-k" data-narrow="hide" style="left:96px;top:236px">Question</div>
+      <div class="i1-q tr-q" data-narrow="hide" style="left:96px;top:272px">How does a robot use this map to reach an image goal?</div>
+      <figure class="tr-card" style="left:96px;top:430px"><img src="media/stills/r4/idea1_fig16a.jpg" alt="The merged map of the HKUST campus on a satellite image" width="396" height="248" loading="lazy"><figcaption data-narrow="hide"><b>Topometric map</b><span>images + poses + edges</span></figcaption></figure>
+      <div class="tr-arr" data-narrow="hide" style="left:502px;top:560px">→</div>
+      <figure class="tr-card" style="left:984px;top:430px"><img src="media/stills/nav/r4_around_sceneshot_1_full.jpg" alt="Robot's screen: the map of photos with green lines joining matching points between the camera image and a map image" width="396" height="248" loading="lazy"><figcaption data-narrow="hide"><b>Visual localization</b><span>LiteVLoc [ICRA'2025]</span></figcaption></figure>
+      <div class="tr-arr" data-narrow="hide" style="left:946px;top:560px">→</div>
+      <figure class="tr-card tr-left" style="left:540px;top:430px"><img src="media/stills/paper/fig18_planning.jpg" alt="A goal photo above a map with the planned shortest path in green" width="396" height="248" loading="lazy"><figcaption data-narrow="hide"><b>Global path planning</b><span>traversability graph</span></figcaption></figure>
+      <div class="tr-arr" data-narrow="hide" style="left:1390px;top:560px">→</div>
+      <figure class="tr-card" style="left:1428px;top:430px"><img src="media/nav/lab_robot.jpg" alt="The ANYmal-D legged robot in the lab" width="396" height="248" loading="lazy"><figcaption data-narrow="hide"><b>Image-goal navigation</b><span>ANYmal-D</span></figcaption></figure>
+    </div>
+  </div>
+  <p class="fig-cap">The map is built; the rest of the page shows what it is used for: planning a path to a goal image, localizing the robot's camera image in the map, and walking there.</p>
+  <div class="narrow-copy">
+    <ul class="nc-rows">
+      <li><b>So far</b><span>how the topometric map is built, merged and maintained.</span></li>
+      <li><b>Next</b><span>how a robot uses it: global path planning → visual localization (LiteVLoc [ICRA'2025]) → image-goal navigation on ANYmal-D.</span></li>
+    </ul>
+  </div>
+  <div class="panel-src">LiteVLoc: Jiao et al., ICRA 2025</div>
+  <aside class="panel-notes">So far: how the map is built, merged and maintained. Now: what the map is for. We build a navigation system on OpenNavMap with existing open-source frameworks, including our earlier work LiteVLoc. Given a goal image, the robot plans a path on the traversability graph, localizes its camera image in the map as it moves, and follows that path. Next come path planning on the map, then the runs on the legged robot.</aside>
+</section>
+
+<section class="panel" id="p09" data-chapter="4" data-talk-seconds="35" data-toc="Global path planning">
+  <div class="eyebrow"><span>09</span> / Global path planning</div>
+  <h2 class="panel-title">Global path planning on the merged map</h2>
+  <p class="panel-desc">Fixed start; more image goals become reachable as submaps are merged.</p>
+  <div class="stage" role="img" aria-label="Five maps of growing size. On each, a green shortest path runs from the same start to the place shown in the goal photo above it.">
+    <div class="stage-inner">
+      <div class="r4-fig-label" style="left:96px;top:196px" data-narrow="hide">Top: goal image · bottom: shortest path on the traversability graph</div>
+      <div class="r4-fig" style="left:96px;top:240px;width:1728px"><img src="media/stills/paper/fig18_planning.jpg" alt="Five goal photos, each above a map with the planned shortest path in green from a fixed start to the goal" width="2600" height="659"></div>
+    </div>
+  </div>
+  <p class="fig-cap">Green: the shortest route the planner finds on the map, from one fixed start (star) to the place in the goal photo (triangle). Goal photos come from glasses (a to c), Street View (d) and a phone (e). Dates give the time span of the recordings in the map.</p>
+  <div class="narrow-copy">
+    <ul class="nc-rows">
+      <li><b>Same start, growing map</b><span>each added piece makes more goal photos reachable</span></li>
+    </ul>
+  </div>
+  <div class="panel-src">Paper Fig. 18</div>
+  <aside class="panel-notes">Why keep merging? Because every new piece opens new routes. All five routes start at the same point. On the left the map holds a few recordings and the planner reaches a goal nearby. As more recordings join, the planner reaches goals hundreds of metres away. The goal photos come from different cameras: smart glasses, Street View and a phone. This panel is route planning on the map only; the robot runs come next.</aside>
+</section>
+
+<!-- P08: robot navigation, one route in three lighting conditions -->
+<section class="panel" id="p08f" data-chapter="4" data-tab="Robot: three lighting conditions" data-talk-seconds="90" data-toc="Robot: lab, out the back door and back">
+  <div class="eyebrow"><span>08</span> / Navigation</div>
+  <h2 class="panel-title">Image-goal navigation across lighting conditions</h2>
+  <p class="panel-desc">One map, three runs: lab, out the back door, and back inside.</p>
+  <div class="stage" role="img" aria-label="Three rows of two videos, played together at 12 times speed. Each row is one run of the same route, from the lab out the back door and back inside, on the same map: in direct morning sun, in dim evening light, and at nightfall with the lamps on. Left in each row: the legged robot filmed from behind. Right: the robot's map view at the same moment, with numbered map places, graph edges, the planned route, the travelled path and the next waypoint.">
+    <div class="stage-inner" data-r4-group="all">
+      <div class="r4-lbl" data-narrow="hide" style="left:300px;top:166px">Third-person view <span>~12x</span></div>
+      <div class="r4-lbl" data-narrow="hide" style="left:737px;top:166px">Robot's map view (RViz) <span>12x</span></div>
+      <div class="r4-lbl" data-narrow="hide" style="left:96px;top:212px;width:190px;white-space:normal">Morning, direct sun</div>
+      <video class="r4v" style="left:300px;top:206px;width:423px;height:238px" muted playsinline preload="metadata" poster="media/nav/r12_succ1_third.jpg" src="media/nav/r12_succ1_third.mp4" aria-label="The robot filmed from behind, in direct morning sun, about 12 times speed"></video>
+      <video class="r4v" style="left:737px;top:206px;width:578px;height:238px" muted playsinline preload="metadata" poster="media/nav/r12_succ1_map.jpg" src="media/nav/r12_succ1_map.mp4" aria-label="The robot's map view during the same run, 12 times speed"></video>
+      <div class="r4-lbl" data-narrow="hide" style="left:96px;top:464px;width:190px;white-space:normal">Evening, dim</div>
+      <video class="r4v" style="left:300px;top:458px;width:423px;height:238px" muted playsinline preload="metadata" poster="media/nav/r12_succ3_third.jpg" src="media/nav/r12_succ3_third.mp4" aria-label="The robot filmed from behind, in dim evening light, about 12 times speed"></video>
+      <video class="r4v" style="left:737px;top:458px;width:578px;height:238px" muted playsinline preload="metadata" poster="media/nav/r12_succ3_map.jpg" src="media/nav/r12_succ3_map.mp4" aria-label="The robot's map view during the same run, 12 times speed"></video>
+      <div class="r4-lbl" data-narrow="hide" style="left:96px;top:716px;width:190px;white-space:normal">Nightfall, lamps on</div>
+      <video class="r4v" style="left:300px;top:710px;width:423px;height:238px" muted playsinline preload="metadata" poster="media/nav/r12_succ4_third.jpg" src="media/nav/r12_succ4_third.mp4" aria-label="The robot filmed from behind, at nightfall with the lamps on, about 12 times speed"></video>
+      <video class="r4v" style="left:737px;top:710px;width:578px;height:238px" muted playsinline preload="metadata" poster="media/nav/r12_succ4_map.jpg" src="media/nav/r12_succ4_map.mp4" aria-label="The robot's map view during the same run, 12 times speed"></video>
+      <div class="r4-ctl" data-narrow="hide" style="left:1347px;top:206px;width:477px">
+        <button type="button" class="p08-btn" data-r4="toggle">Play</button>
+        <div class="p08-track"><input type="range" data-r4="seek" min="0" max="1000" value="0" step="1" aria-label="Timeline of all six videos"></div>
+        <span class="p08-time tnum" data-r4="time">0:00 / 0:31</span>
+      </div>
+      <div class="r4-key" data-narrow="hide" style="left:1347px;top:276px;width:477px">white numbers = map nodes<br><span class="c-blue">blue</span> = graph edges<br><span class="c-green">green</span> = planned route<br><span class="c-red">red</span> = travelled path<br><span class="c-purple">purple ball</span> = next waypoint</div>
+    </div>
+  </div>
+  <p class="fig-cap">Three runs of the same route, from the lab out the back door and back inside, on the same map; the map was not rebuilt for the dark. In each row, the robot filmed from behind (left) and its map view (right), 12 times faster than real and lined up by what they show, to within about 3 s of real time; the left video's speed varies to stay in step. Shorter rows hold their last frame.</p>
+  <div class="anim-ctl" role="group" aria-label="Video controls">
+    <button type="button" class="btn btn-sm" data-r4="toggle">Play</button>
+    <span class="anim-note">All three rows play together at 12x.</span>
+  </div>
+  <div class="narrow-copy">
+    <ul class="nc-rows">
+      <li><b>Rows</b><span>Morning, direct sun; evening, dim; nightfall, lamps on.</span></li>
+      <li><b>Left</b><span>The ANYmal-D legged robot, filmed from behind.</span></li>
+      <li><b>Right</b><span>The robot's map view at the same moment: planned route in green, travelled path in red.</span></li>
+    </ul>
+  </div>
+  <div class="panel-src">Our recordings, 12x</div>
+  <aside class="panel-notes">Now the map is used. We give the legged robot one photo of a place; it finds where it is among the map's photos and goes there. Here it does that three times on the same route, from the lab out the back door and back inside: in morning sun, in dim evening light and at nightfall with the lamps on. In each row, left is the robot from behind and right is its map view at the same moment: the planned route in green, the path so far in red, the next waypoint as a purple ball. The map was not rebuilt for the dark; the robot still matches what it sees to the map's photos and follows the route.</aside>
+</section>
+<section class="panel" id="p08c" data-chapter="4" data-tab="Robot: building loop" data-talk-seconds="45">
+  <div class="eyebrow">Navigation</div>
+  <h2 class="panel-title">Outdoor image-goal navigation: loop around a building</h2>
+  <p class="panel-desc">Daytime, pavements and narrow lanes, with pedestrians.</p>
+  <div class="stage" role="img" aria-label="Two videos side by side, played together at about 12 times speed. Left: the legged robot filmed from behind, walking pavements and narrow lanes around a building on a sunny day. Right: the robot's screen during the same run: on top the camera image and the depth image side by side; below, the map with its numbered places, the planned route, the path walked so far and the next waypoint.">
+    <div class="stage-inner" data-r4-group="pair">
+      <div class="r4-lbl" data-narrow="hide" style="left:96px;top:170px">Third-person view <span>~12x</span></div>
+      <div class="r4-lbl" data-narrow="hide" style="left:979px;top:170px">Onboard visualization (RViz) <span>~12x</span></div>
+      <video class="r4v" style="left:96px;top:210px;width:867px;height:488px" muted playsinline preload="metadata" poster="media/nav/r15_around1_third.jpg" src="media/nav/r15_around1_third.mp4" aria-label="The robot walking pavements and lanes around a building on a sunny day, filmed from behind, about 12 times speed"></video>
+      <video class="r4v" style="left:979px;top:210px;width:845px;height:590px" muted playsinline preload="metadata" poster="media/nav/r15_around1_rviz.jpg" src="media/nav/r15_around1_rviz.mp4" aria-label="The robot's screen during the same run, about 12 times speed"></video>
+      <div class="r4-ctl" data-narrow="hide" style="left:96px;top:714px;width:867px">
+        <button type="button" class="p08-btn" data-r4="toggle">Play</button>
+        <div class="p08-track"><input type="range" data-r4="seek" min="0" max="1000" value="0" step="1" aria-label="Timeline of both videos"></div>
+        <span class="p08-time tnum" data-r4="time">0:00 / 0:45</span>
+      </div>
+      <div class="r4-key" data-narrow="hide" style="left:979px;top:816px;width:420px"><b>Top</b>: current image · depth<br>white numbers = map nodes<br><span class="c-blue">blue</span> = graph edges</div>
+      <div class="r4-key" data-narrow="hide" style="left:1404px;top:816px;width:420px"><span class="c-green">green</span> = planned route<br><span class="c-red">red</span> = travelled path<br><span class="c-purple">purple ball</span> = next waypoint</div>
+    </div>
+  </div>
+  <p class="fig-cap">One run, filmed from behind (left) and recorded on the robot's screen (right), about 12 times faster than real. The two are lined up by what they show, to within about 1.5 s; the left video's speed varies slightly to stay in step with the screen recording.</p>
+  <div class="anim-ctl" role="group" aria-label="Video controls">
+    <button type="button" class="btn btn-sm" data-r4="toggle">Play</button>
+    <span class="anim-note">Both videos play together at about 12x.</span>
+  </div>
+  <div class="panel-src">Our recording, about 12x</div>
+  <aside class="panel-notes">Now fully outdoors: a sunny day, a loop on the pavements and narrow lanes around a building, with people walking past. Left, the robot from behind; right, its screen at the same moment, with the map, the planned route and the path it has walked.</aside>
+</section>
+<section class="panel" id="p08e" data-chapter="4" data-tab="Robot: walkway" data-talk-seconds="45">
+  <div class="eyebrow">Navigation</div>
+  <h2 class="panel-title">Outdoor image-goal navigation: public walkway</h2>
+  <p class="panel-desc">One run between campus buildings, daytime, with pedestrians close by.</p>
+  <div class="stage" role="img" aria-label="Two videos side by side, played together at 12 times speed. Left: the legged robot filmed from behind along a wide public walkway between campus buildings on a sunny day, with families, cyclists and a skateboarder passing close. Right: the robot's screen during the same run: on top the camera image and the depth image side by side; below, the map with its numbered places, the planned route, the path walked so far and the next waypoint.">
+    <div class="stage-inner" data-r4-group="pair">
+      <div class="r4-lbl" data-narrow="hide" style="left:96px;top:170px">Third-person view <span>12x</span></div>
+      <div class="r4-lbl" data-narrow="hide" style="left:979px;top:170px">Onboard visualization (RViz) <span>12x</span></div>
+      <video class="r4v" style="left:96px;top:210px;width:867px;height:488px" muted playsinline preload="metadata" poster="media/nav/r15_msg0_third.jpg" src="media/nav/r15_msg0_third.mp4" aria-label="The robot on a public walkway between campus buildings, filmed from behind, 12 times speed"></video>
+      <video class="r4v" style="left:979px;top:210px;width:845px;height:590px" muted playsinline preload="metadata" poster="media/nav/r15_msg0_rviz.jpg" src="media/nav/r15_msg0_rviz.mp4" aria-label="The robot's screen during the same run, 12 times speed"></video>
+      <div class="r4-ctl" data-narrow="hide" style="left:96px;top:714px;width:867px">
+        <button type="button" class="p08-btn" data-r4="toggle">Play</button>
+        <div class="p08-track"><input type="range" data-r4="seek" min="0" max="1000" value="0" step="1" aria-label="Timeline of both videos"></div>
+        <span class="p08-time tnum" data-r4="time">0:00 / 0:50</span>
+      </div>
+      <div class="r4-key" data-narrow="hide" style="left:979px;top:816px;width:420px"><b>Top</b>: current image · depth<br>white numbers = map nodes<br><span class="c-blue">blue</span> = graph edges</div>
+      <div class="r4-key" data-narrow="hide" style="left:1404px;top:816px;width:420px"><span class="c-green">green</span> = planned route<br><span class="c-red">red</span> = travelled path<br><span class="c-purple">purple ball</span> = next waypoint</div>
+    </div>
+  </div>
+  <p class="fig-cap">One run, filmed from behind (left) and recorded on the robot's screen (right), both 12 times faster than real and lined up by what they show, to within about 1.5 s. Both start about 40 s into the run, when filming began; the left one ends about 13 s before the goal.</p>
+  <div class="anim-ctl" role="group" aria-label="Video controls">
+    <button type="button" class="btn btn-sm" data-r4="toggle">Play</button>
+    <span class="anim-note">Both videos play together at 12x.</span>
+  </div>
+  <div class="panel-src">Our recording, 12x</div>
+  <aside class="panel-notes">Further out: a wide public walkway between campus buildings on a sunny day, with families, cyclists and a skateboarder passing close. Left, the robot from behind; right, its screen at the same moment, with the map, the planned route and the path it has walked.</aside>
+</section>
 
 
-            <div class="column has-text-centered">
-              <!-- Paper/Preprint Link. -->
-              <span class="link-block">
-                <a href="https://arxiv.org/abs/2601.12291"
-                  class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                    <i class="ai ai-open-access"></i>
-                  </span>
-                  <span>Arxiv</span>
-                </a>
-              </span>
+<!-- P08d: simulation -->
+<section class="panel" id="p08d" data-chapter="4" data-tab="Simulation" data-talk-seconds="30">
+  <div class="eyebrow">Navigation</div>
+  <h2 class="panel-title">Image-goal navigation in simulation</h2>
+  <p class="panel-desc">Two homes and one office in simulated indoor environments.</p>
+  <div class="stage" role="img" aria-label="Three simulation videos side by side: a robot moving through two simulated homes at 5 times speed and an office at 10 times speed. Top strip: goal image, matches, current image, depth. Map: numbered nodes, blue edges, green planned path, red travelled path, purple next waypoint.">
+    <div class="stage-inner" data-r4-group="all">
+      <div class="r4-lbl" data-narrow="hide" style="left:96px;top:170px">Home <span>5x</span></div>
+      <video class="r4v r4-three" style="left:96px;top:210px" muted playsinline preload="metadata" poster="media/nav/simu_0.jpg" src="media/nav/simu_0.mp4" aria-label="Simulation, a home, 5 times speed"></video>
+      <div class="r4-lbl" data-narrow="hide" style="left:680px;top:170px">Another home <span>5x</span></div>
+      <video class="r4v r4-three" style="left:680px;top:210px" muted playsinline preload="metadata" poster="media/nav/simu_1.jpg" src="media/nav/simu_1.mp4" aria-label="Simulation, another home, 5 times speed"></video>
+      <div class="r4-lbl" data-narrow="hide" style="left:1264px;top:170px">Office <span>10x</span></div>
+      <video class="r4v r4-three" style="left:1264px;top:210px" muted playsinline preload="metadata" poster="media/nav/simu_2.jpg" src="media/nav/simu_2.mp4" aria-label="Simulation, an office, 10 times speed"></video>
+      <div class="r4-ctl" data-narrow="hide" style="left:96px;top:545px;width:1728px">
+        <button type="button" class="p08-btn" data-r4="toggle">Play</button>
+        <div class="p08-track"><input type="range" data-r4="seek" min="0" max="1000" value="0" step="1" aria-label="Timeline of the three videos"></div>
+        <span class="p08-time tnum" data-r4="time">0:00 / 0:21</span>
+      </div>
+      <div class="r4-key" data-narrow="hide" style="left:96px;top:598px;width:560px"><b>Top</b>: goal · matches · current · depth<br>white numbers = map nodes</div>
+      <div class="r4-key" data-narrow="hide" style="left:680px;top:598px;width:560px"><span class="c-blue">blue</span> = graph edges<br><span class="c-green">green</span> = planned path</div>
+      <div class="r4-key" data-narrow="hide" style="left:1264px;top:598px;width:560px"><span class="c-red">red</span> = travelled path<br><span class="c-purple">purple ball</span> = next waypoint</div>
+    </div>
+  </div>
+  <p class="fig-cap">Simulated runs in two homes and an office; the green line is the planned path. Clips from the LiteVLoc project page (same authors).</p>
+  <div class="anim-ctl" role="group" aria-label="Video controls">
+    <button type="button" class="btn btn-sm" data-r4="toggle">Play</button>
+    <span class="anim-note">The three videos play together; each at its own speed.</span>
+  </div>
+  <div class="panel-src">Clips: <a href="https://rpl-cs-ucl.github.io/LiteVLoc/" target="_blank" rel="noopener">LiteVLoc project page</a></div>
+  <aside class="panel-notes">The same method in simulation: two homes and an office. Green is the path the robot plans over the map.</aside>
+</section>
 
-              <!-- Video Link. -->
-              <!-- <span class="link-block">
-                <a href="https://youtu.be/xx"
-                  class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                    <i class="fab fa-youtube"></i>
-                  </span>
-                  <span>Video</span>
-                </a>
-              </span> -->
+<!-- P10 -->
+<section class="panel" id="p10" data-chapter="5" data-talk-seconds="60" data-toc="Applications and future work">
+  <div class="eyebrow"><span>10</span> / Applications and future work</div>
+  <h2 class="panel-title">Downstream applications and future directions</h2>
+  <p class="panel-desc">Tasks already built on the topometric map, and four open problems.</p>
+  <div class="stage" role="img" aria-label="Top: three videos of systems built on the map: a legged robot searching for a bench with a topological graph, scene-graph mapping of an office, and a legged robot reaching a plant shelf, with an inset of its path on the map. Bottom: four future directions, each with the limitation it addresses.">
+    <div class="stage-inner" data-r4-group="all">
+      <div class="r5-k" data-narrow="hide" style="left:96px;top:164px">Built on the topometric map</div>
+      <div class="r4-lbl" data-narrow="hide" style="left:96px;top:198px">Object search on the topological graph <span>16x</span></div>
+      <video class="r4v" style="left:96px;top:238px;width:607px;height:276px" muted playsinline preload="metadata" poster="media/nav/r5_objsearch.jpg" src="media/nav/r5_objsearch.mp4" aria-label="A legged robot searches a garden for a bench using a topological graph, about 16 times speed"></video>
+      <div class="r4-lbl" data-narrow="hide" style="left:736px;top:198px">Scene-graph mapping <span>5x</span></div>
+      <video class="r4v" style="left:736px;top:238px;width:563px;height:276px" muted playsinline preload="metadata" poster="media/nav/r5_scenegraph.jpg" src="media/nav/r5_scenegraph.mp4" aria-label="Objects and rooms are added to a scene graph as a robot moves through an office, about 5 times speed"></video>
+      <div class="r4-lbl" data-narrow="hide" style="left:1332px;top:198px">Object retrieval and reach <span>~3.5x</span></div>
+      <video class="r4v" style="left:1332px;top:238px;width:491px;height:276px" muted playsinline preload="metadata" poster="media/nav/r15_app_findplant.jpg" src="media/nav/r15_app_findplant.mp4" aria-label="A legged robot is sent to a plant shelf and reaches it; the inset shows its path on the map, about 3.5 times speed"></video>
+      <div class="r4-key" data-narrow="hide" style="left:1332px;top:524px">Built on LiteVLoc [ICRA'2025]</div>
+      <div class="r4-ctl" data-narrow="hide" style="left:96px;top:572px;width:1728px">
+        <button type="button" class="p08-btn" data-r4="toggle">Play</button>
+        <div class="p08-track"><input type="range" data-r4="seek" min="0" max="1000" value="0" step="1" aria-label="Timeline of the three videos"></div>
+        <span class="p08-time tnum" data-r4="time">0:00 / 0:20</span>
+      </div>
+      <div class="r5-k" data-narrow="hide" style="left:96px;top:650px">Open problems → future directions</div>
+      <div class="r5-fd" data-narrow="hide" style="left:96px;top:686px"><svg viewBox="0 0 96 96" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M10 30 Q30 8 52 22 Q64 44 50 66 Q28 84 12 62 Z" stroke-dasharray="6 5"/><circle cx="24" cy="40" r="4" fill="currentColor"/><circle cx="38" cy="54" r="4" fill="currentColor"/><path d="M24 40 L38 54"/><circle cx="80" cy="30" r="7" fill="currentColor"/><path d="M52 44 Q66 46 76 36" stroke-dasharray="3 5"/></svg><div><b>Exploration, active SLAM</b><span>today: no recovery outside the map</span></div></div>
+      <div class="r5-fd" data-narrow="hide" style="left:534px;top:686px"><svg viewBox="0 0 96 96" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><circle cx="26" cy="26" r="11"/><path d="M26 6v6M26 40v6M6 26h6M40 26h6"/><path d="M82 22a14 14 0 1 0 6 22a11 11 0 0 1-6-22z" fill="currentColor"/><rect x="10" y="60" width="30" height="22" rx="3"/><circle cx="25" cy="71" r="6"/><rect x="58" y="58" width="22" height="28" rx="3"/><circle cx="69" cy="72" r="5"/><path d="M44 71h10" stroke-dasharray="3 4"/></svg><div><b>More general geometric foundation models</b><span>today: weaker across devices, lighting</span></div></div>
+      <div class="r5-fd" data-narrow="hide" style="left:972px;top:686px"><svg viewBox="0 0 96 96" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M36 15h24M36 81h24M19 29v38M77 29v38" stroke-dasharray="4 4"/><rect x="4" y="3" width="30" height="24" rx="3"/><path d="M10 21 L16 12 L22 18 L28 10" stroke-width="2"/><circle cx="10" cy="21" r="2" fill="currentColor" stroke="none"/><circle cx="16" cy="12" r="2" fill="currentColor" stroke="none"/><circle cx="22" cy="18" r="2" fill="currentColor" stroke="none"/><circle cx="28" cy="10" r="2" fill="currentColor" stroke="none"/><rect x="62" y="3" width="30" height="24" rx="3"/><path d="M68 21 L74 12 L80 18 L86 10" stroke-width="2"/><circle cx="68" cy="21" r="2" fill="currentColor" stroke="none"/><circle cx="74" cy="12" r="2" fill="currentColor" stroke="none"/><circle cx="80" cy="18" r="2" fill="currentColor" stroke="none"/><circle cx="86" cy="10" r="2" fill="currentColor" stroke="none"/><rect x="4" y="69" width="30" height="24" rx="3"/><path d="M10 87 L16 78 L22 84 L28 76" stroke-width="2"/><circle cx="10" cy="87" r="2" fill="currentColor" stroke="none"/><circle cx="16" cy="78" r="2" fill="currentColor" stroke="none"/><circle cx="22" cy="84" r="2" fill="currentColor" stroke="none"/><circle cx="28" cy="76" r="2" fill="currentColor" stroke="none"/><rect x="62" y="69" width="30" height="24" rx="3"/><path d="M68 87 L74 78 L80 84 L86 76" stroke-width="2"/><circle cx="68" cy="87" r="2" fill="currentColor" stroke="none"/><circle cx="74" cy="78" r="2" fill="currentColor" stroke="none"/><circle cx="80" cy="84" r="2" fill="currentColor" stroke="none"/><circle cx="86" cy="76" r="2" fill="currentColor" stroke="none"/></svg><div><b>Decentralized map merging</b><span>today: single-server bottleneck</span></div></div>
+      <div class="r5-fd" data-narrow="hide" style="left:1410px;top:686px"><svg viewBox="0 0 96 96" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><rect x="6" y="58" width="17" height="25" rx="2"/><path d="M9 79l4-6 3 3 4-6" stroke-width="2"/><circle cx="18" cy="64" r="1.8" fill="currentColor" stroke="none"/><rect x="29" y="58" width="17" height="25" rx="2"/><path d="M32 79l4-6 3 3 4-6" stroke-width="2"/><circle cx="41" cy="64" r="1.8" fill="currentColor" stroke="none"/><rect x="52" y="58" width="17" height="25" rx="2" fill="currentColor" fill-opacity=".35"/><path d="M55 79l4-6 3 3 4-6" stroke-width="2"/><circle cx="64" cy="64" r="1.8" fill="currentColor" stroke="none"/><rect x="75" y="58" width="17" height="25" rx="2"/><path d="M78 79l4-6 3 3 4-6" stroke-width="2"/><circle cx="87" cy="64" r="1.8" fill="currentColor" stroke="none"/><path d="M60.5 52c-7-9-12-15-12-22a12 12 0 0 1 24 0c0 7-5 13-12 22z" fill="var(--surface)"/><circle cx="60.5" cy="30" r="4" fill="currentColor"/></svg><div><b>Place-indexed matching</b><span>today: sequential, exhaustive matching</span></div></div>
+    </div>
+  </div>
+  <div class="narrow-copy">
+    <ul class="nc-rows">
+      <li><b>Built on the map</b><span>object search on the topological graph; scene-graph mapping; object retrieval and reach, built on LiteVLoc [ICRA'2025]</span></li>
+      <li><b>Off the map</b><span>no recovery today; next: exploration and active SLAM</span></li>
+      <li><b>Geometric foundation model</b><span>weaker across devices and lighting; next: more general models</span></li>
+      <li><b>One server</b><span>bottlenecks at scale; next: decentralised merging</span></li>
+      <li><b>Matching</b><span>slow at scale; next: index by place</span></li>
+    </ul>
+  </div>
+  <p class="fig-cap">Three systems that use the map, and four directions the paper names.</p>
+  <div class="anim-ctl" role="group" aria-label="Video controls">
+    <button type="button" class="btn btn-sm" data-r4="toggle">Play</button>
+    <span class="anim-note">The three videos play together.</span>
+  </div>
+  <div class="panel-src">Paper Sec. VI-B · Our recordings</div>
+  <aside class="panel-notes">The map is already used beyond image-goal navigation. Left: a legged robot searches a garden for a bench; it explores with a topological graph of the same kind. Middle: objects and rooms are attached to the topometric map to form a scene graph. Right: the same map and localization also drive an object retrieval task, here reaching a plant shelf. Then four open problems. One: the robot only works inside the mapped area; exploration and active SLAM would let it recover. Two: the geometric foundation model gets weaker across devices and lighting. Three: all merging runs on one server; a decentralised version is the direction. Four: matching follows recording order and searches exhaustively; indexing by place would be faster.</aside>
+</section>
 
-              <!-- Code Link. -->
-              <span class="link-block">
-                <a href="https://github.com/RPL-CS-UCL/OpenNavMap"
-                  class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                    <i class="fab fa-github"></i>
-                  </span>
-                  <span>Code</span>
-                </a>
-              </span>
+<!-- P11: talk only; on the web page the cite section below takes its place -->
+<section class="panel" id="p11" data-talk-seconds="15" data-talk-only>
+  <h2 class="panel-title">Thank you</h2>
+  <div class="stage" role="img" aria-label="Closing slide: OpenNavMap, authors, institutions and links.">
+    <div class="stage-inner">
+      <div class="r4-end" style="left:96px;top:230px;width:1728px">
+        <div class="r4-end-title">OpenNavMap</div>
+        <p class="r4-end-authors">Jianhao Jiao · Changkun Liu · Jingwen Yu · Boyi Liu · Qianyi Zhang · Yue Wang · Dimitrios Kanoulas</p>
+        <div class="r4-end-logos">
+          <img class="logo-wordmark" src="media/logos/ucl_logo.svg" alt="UCL">
+          <img src="media/logos/hkust_symbol.svg" alt="HKUST">
+          <img src="media/logos/nankai_logo.svg" alt="Nankai University">
+          <img src="media/logos/zju_logo.svg" alt="Zhejiang University">
+        </div>
+        <p class="r4-end-links">arxiv.org/abs/2601.12291<br>github.com/RPL-CS-UCL/OpenNavMap</p>
+      </div>
+      <p class="r5-contact" style="left:96px;top:950px;width:1728px">Contact: Jianhao Jiao · <a href="mailto:jiaojh1994@gmail.com">jiaojh1994@gmail.com</a> · <a href="https://gogojjh.github.io" target="_blank" rel="noopener">gogojjh.github.io</a></p>
+    </div>
+  </div>
+  <p class="fig-cap">Closing slide: authors, institutions and links.</p>
+  <div class="panel-src">Supported by the UKRI Future Leaders Fellowship [MR/V025333/1] (RoboHike).</div>
+  <aside class="panel-notes">Thank the team and the funders. Paper, code and data are public.</aside>
+</section>
 
-              <!-- Dataset Link. -->
-              <!-- <span class="link-block">
-                <a href="https://rpl-cs-ucl.github.io/OpenNavMap_page"
-                  class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                    <i class="fas fa-database"></i>
-                  </span>
-                  <span>Dataset</span>
-                </a>
-              </span> -->
-            </div>            
-            
-            <section class="section">
-              <div class="container">
-                <div class="columns is-centered has-text-centered">
-                  <div class="column is-two-thirds">
-                    <h3 class="title is-2">Abstract</h3>
-                    <div class="content has-text-justified">
-                      <p>
-                        Large-scale visual navigation relies on scalable, easy-to-maintain map representations, which are essential for enabling real-world robot deployments. While collaborative localization across multiple mapping sessions offers efficiency, conventional structure-based approaches face high maintenance costs and often fail in feature-less environments or under large viewpoint changes. To tackle these challenges, we introduce <b>OpenNavMap</b>: a lightweight, structure-free topometric mapping system that uses 3D geometric foundation models for on-demand reconstruction. Our method combines sequence matching, geometric verification, and robust optimization to align submaps precisely, all without needing pre-built 3D models. On the Map-Free benchmark, OpenNavMap outperforms structure-from-motion and regression baselines, achieving high accuracy in relocalization and map merging across a wide range of real-world scenarios. We additionally demonstrate reliable image-goal navigation with real and simulated robots.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+<section class="cite" id="cite">
+  <div class="eyebrow"><span>11</span> / Cite</div>
+  <h2 class="cite-title">Cite</h2>
+  <div class="bib">
+    <button type="button" class="btn btn-sm bib-copy" data-action="copy-bib">Copy</button>
+<pre id="bibtex">@article{jiao_opennavmap,
+  title   = {{OpenNavMap}: Multi-Session Appearance-Based Topometric Mapping for Scalable Visual Navigation},
+  author  = {Jiao, Jianhao and Liu, Changkun and Yu, Jingwen and Liu, Boyi and Zhang, Qianyi and Wang, Yue and Kanoulas, Dimitrios},
+  journal = {Published in IEEE Transactions on Robotics},
+  year    = {2026},
+  note    = {arXiv:2601.12291}
+}</pre>
+  </div>
+  <p class="funding">Supported by the UKRI Future Leaders Fellowship [MR/V025333/1] (RoboHike).</p>
+  <p class="r5-contact">Contact: Jianhao Jiao · <a href="mailto:jiaojh1994@gmail.com">jiaojh1994@gmail.com</a> · <a href="https://gogojjh.github.io" target="_blank" rel="noopener">gogojjh.github.io</a></p>
+</section>
 
-              <section class="section">
-                <div class="container">
-                  <div class="columns is-centered">
-                    <div class="column is-full-width">
-                      <h2 class="title is-2" style="text-align: center; padding-bottom: 0px;">
-                        Video
-                      </h2>
-                      <td>
-                        <div class="row">
-                          <div class="col">
-                            <video playsinline controls src="./resources/paper_opennavmap_submission.mp4"
-                              width="80%" style="border-radius:10px; "></video>
-                          </div>
-                        </div>
-                      </td>
+</main>
 
-                    </div>
-                  </div>
-                </div>
-              </section>
+<footer class="site-footer">
+  <div class="wrap">
+    <span>OpenNavMap · IEEE Transactions on Robotics (T-RO)</span>
+    <details class="credits" aria-label="Credits"><summary>Image and video credits</summary>
+      <span>Simulation navigation clips from the LiteVLoc project page (<a href="https://rpl-cs-ucl.github.io/LiteVLoc/" target="_blank" rel="noopener">rpl-cs-ucl.github.io/LiteVLoc</a>), same authors.</span>
+      <span>Figure crops on the "Why" chart: Li et al., BEHAVIOR-1K, <a href="https://arxiv.org/abs/2403.09227" target="_blank" rel="noopener">arXiv:2403.09227</a>, Fig. 1, CC BY 4.0 · Yenamandra et al., HomeRobot, <a href="https://arxiv.org/abs/2306.11565" target="_blank" rel="noopener">arXiv:2306.11565</a>, Fig. 2, CC BY 4.0 · Chiang et al., Mobility VLA, <a href="https://arxiv.org/abs/2407.07775" target="_blank" rel="noopener">arXiv:2407.07775</a>, Fig. 2 (recomposed), CC BY 4.0 · Shah and Levine, ViKiNG, <a href="https://arxiv.org/abs/2202.11271" target="_blank" rel="noopener">arXiv:2202.11271</a>, Fig. 1, CC BY 4.0 · Zhang et al., CREStE, <a href="https://arxiv.org/abs/2503.03921" target="_blank" rel="noopener">arXiv:2503.03921</a>, Fig. 5, CC BY-SA 4.0 · Staniaszek et al., AutoInspect, <a href="https://arxiv.org/abs/2404.12785" target="_blank" rel="noopener">arXiv:2404.12785</a>, Fig. 1, arXiv non-exclusive licence<!-- AutoInspect figure: arXiv non-exclusive licence only, not Creative Commons; permission to be confirmed by the authors before the page goes public. --> · landmark map: our baseline run, generated from its sparse 3D landmarks.</span>
+    </details>
+    <span class="keys">Talk mode: <kbd>P</kbd> start · <kbd>→</kbd> next · <kbd>←</kbd> back · <kbd>N</kbd> notes · <kbd>S</kbd> speaker window · <kbd>F</kbd> full screen · <kbd>Esc</kbd> leave</span>
+  </div>
+</footer>
 
-              <!-- <section class="section">
-                <div class="container">
-                  <div class="columns is-centered">
-                    <div class="column is-full-width">
-                      <h2 class="title is-2" style="text-align: center; padding-bottom: 10px;">
-                        Evaluation on the Dataset for Map-Free Relocalization</h2>
-                      <h5>
-                        <center>
-                          We evaluate 13 state-of-the-art image matching methods under severe
-                          viewpoint changes, occlusions, and lighting variations. This will serve as
-                          an important experiment for our work.
-                        </center>
-                        <center>
-                          More results can be found this <a
-                            href="https://drive.google.com/drive/folders/1Q5rYfrmgFHx51MKRK_88bmSUhpo4wZe2?usp=sharing">page</a>.
-                        </center>
-                      </h5>
-                      <br>
-                      <img src="./resources/map_free_reloc/map_free_data_example.png"
-                        width="100%"></img>
-                      <br></br>
-                      <img src="./resources/map_free_reloc/feature_matching_simu_0.png"
-                        width="75%"></img>
-                      <br></br>
-                      <img src="./resources/map_free_reloc/feature_matching_real_0.png"
-                        width="75%"></img>
-                      <br></br>
-                      <img src="./resources/map_free_reloc/feature_matching_real_1.png"
-                        width="75%"></img>
-                      <br></br>
-                      <img src="./resources/map_free_reloc/feature_matching_real_2.png"
-                        width="75%"></img>
-                    </div>
-                  </div>
-                </div>
-              </section>
-
-              <section class="section">
-                <div class="container">
-                  <div class="columns is-centered">
-                    <div class="column is-full-width">
-                      <h2 class="title is-2" style="text-align: center; padding-bottom: 10px;">
-                        Visual Localization Evaluation</h2>
-                      <h5>
-                        <center>
-                          We evaluate the proposed LiteVLoc on 9 Simulated Sequences
-                        </center>
-                      </h5>
-                      <br>
-                      <div class="row">
-                        <div class="col">
-                          <img src="./resources/vloc_exp/17DRP5sb8fy_seq0_trajectory_top-1.png"
-                            width="100%"></img>
-                        </div>
-                        <div class="col">
-                          <img src="./resources/vloc_exp/17DRP5sb8fy_seq1_trajectory_top-1.png"
-                            width="100%"></img>
-                        </div>
-                        <div class="col">
-                          <img src="./resources/vloc_exp/17DRP5sb8fy_seq1_trajectory_top-1.png"
-                            width="100%"></img>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col">
-                          <img src="./resources/vloc_exp/EDJbREhghzL_seq2_trajectory_top-1.png"
-                            width="100%"></img>
-                        </div>
-                        <div class="col">
-                          <img src="./resources/vloc_exp/EDJbREhghzL_seq0_trajectory_top-1.png"
-                            width="100%"></img>
-                        </div>
-                        <div class="col">
-                          <img src="./resources/vloc_exp/EDJbREhghzL_seq1_trajectory_top-1.png"
-                            width="100%"></img>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col">
-                          <img src="./resources/vloc_exp/B6ByNegPMK_seq0_trajectory_top-1.png"
-                            width="100%"></img>
-                        </div>
-                        <div class="col">
-                          <img src="./resources/vloc_exp/B6ByNegPMK_seq1_trajectory_top-1.png"
-                            width="100%"></img>
-                        </div>
-                        <div class="col">
-                          <img src="./resources/vloc_exp/B6ByNegPMK_seq2_trajectory_top-1.png"
-                            width="100%"></img>
-                        </div>
-                      </div>
-                      <h5>
-                        <center>
-                          We evaluate the proposed LiteVLoc on 3 Real-World Sequences
-                        </center>
-                      </h5>
-                      <div class="row">
-                        <div class="col">
-                          <img src="./resources/vloc_exp/ops_msg_seq2_trajectory_top-1.png"
-                            width="100%"></img>
-                        </div>
-                        <div class="col">
-                          <img src="./resources/vloc_exp/ops_msg_seq0_trajectory_top-1.png"
-                            width="100%"></img>
-                        </div>
-                        <div class="col">
-                          <img src="./resources/vloc_exp/ops_msg_seq1_trajectory_top-1.png"
-                            width="100%"></img>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </section>
-
-              <section class="section">
-                <div class="container">
-                  <div class="columns is-centered">
-                    <div class="column is-full-width">
-                      <h2 class="title is-2" style="text-align: center; padding-bottom: 10px;">
-                        Cloud-Loop Visual Navigation on Simulated Environments</h2>
-                      <img src="./resources/simulated_exp/exp_simu_map.png" width="100%">
-                      <br></br>
-                      <h5>Left to Right: Goal Image - Feature Matching Result - Visual Observation
-                        (Color and Depth Image)
-                      </h5>
-                      <h5><span style="color:red;">Red Trajectory</span>: Estimated Trajectory.
-                        <span style="color:green;">Green Trajectory</span>: Planned Trajectory
-                      </h5>
-                      </h5>
-                      <td>
-                        <div class="row">
-                          <div class="col">
-                            <video autoplay muted loop playsinline controls
-                              src="./resources/simulated_exp/vnav_simu_seq0_rviz_5x.mp4"
-                              width="100%" style="border-radius:10px; "></video>
-                          </div>
-                          <div class="col">
-                            <video autoplay muted loop playsinline controls
-                              src="./resources/simulated_exp/vnav_simu_seq1_rviz_5x.mp4"
-                              width="100%" style="border-radius:10px; "></video>
-                          </div>
-                          <div class="col">
-                            <video autoplay muted loop playsinline controls
-                              src="./resources/simulated_exp/vnav_simu_seq2_rviz_5x.mp4"
-                              width="100%" style="border-radius:10px; "></video>
-                          </div>
-                        </div>
-                      </td>
-                    </div>
-                  </div>
-                </div>
-              </section>
-
-              <section class="section">
-                <div class="container">
-                  <div class="columns is-centered">
-                    <div class="column is-full-width">
-                      <h2 class="title is-2" style="text-align: center; padding-bottom: 0px;">
-                        Cloud-Loop Visual Navigation on Real-World Environments
-                      </h2>
-
-                      <h4 style="text-align: center; padding-bottom: 10px;">
-                        Real-World Deployment
-                      </h4>
-                      <img src="./resources/realworld_exp/experimental_platform_anymal.png"
-                        width="75%">
-                      <br></br>
-
-                      <h4 style="text-align: center; padding-bottom: 10px;">
-                        Environment 0 (Small Scale)
-                      </h4>
-                      <img src="./resources/realworld_exp/exp_real_world_map_meta.png" width="100%">
-                      <br></br>
-
-                      <h4>Goal Images are Given Sequentially
-                      </h4>
-                      <td>
-                        <div class="row">
-                          <div class="col">
-                            <img src="./resources/realworld_exp/ops_lab_goal_image/goal_img_0.jpg"
-                              width="100%">
-                          </div>
-                          <div class="col">
-                            <img src="./resources/realworld_exp/ops_lab_goal_image/goal_img_1.jpg"
-                              width="100%">
-                          </div>
-                          <div class="col">
-                            <img src="./resources/realworld_exp/ops_lab_goal_image/goal_img_2.jpg"
-                              width="100%">
-                          </div>
-                          <div class="col">
-                            <img src="./resources/realworld_exp/ops_lab_goal_image/goal_img_3.jpg"
-                              width="100%">
-                          </div>
-                          <div class="col">
-                            <img src="./resources/realworld_exp/ops_lab_goal_image/goal_img_4.jpg"
-                              width="100%">
-                          </div>
-                        </div>
-                      </td>
-                      <p></p>
-                      <td>
-                        <div class="row">
-                          <div class="col">
-                            <video autoplay muted loop playsinline controls
-                              src="./resources/realworld_exp/vnav_real_ops_lab_seq2_x5.mp4"
-                              width="100%" style="border-radius:10px; "></video>
-                          </div>
-                          <div class="col">
-                            <video autoplay muted loop playsinline controls
-                              src="./resources/realworld_exp/vnav_real_ops_lab_seq2_rviz_x5.mp4"
-                              width="100%" style="border-radius:10px; "></video>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="row">
-                          <div class="col">
-                            <video autoplay muted loop playsinline controls
-                              src="./resources/realworld_exp/vnav_real_ops_lab_seq0_8x.mp4"
-                              width="50%" style="border-radius:10px; "></video>
-                          </div>
-                        </div>
-                      </td>
-                      <br></br>
-
-                      <h4 style="text-align: center; padding-bottom: 10px;">
-                        Environment 1 (Larger Scale)
-                      </h4>
-                      <img src="./resources/realworld_exp/exp_real_world_map_zed.png" width="100%">
-                      <br></br>
-
-                      <h4>Goal Images are Given Sequentially
-                      </h4>
-                      <td>
-                        <div class="row">
-                          <div class="col">
-                            <img src="./resources/realworld_exp/ops_msg_goal_image/goal_img_0.jpg"
-                              width="100%">
-                          </div>
-                          <div class="col">
-                            <img src="./resources/realworld_exp/ops_msg_goal_image/goal_img_1.png"
-                              width="85%">
-                          </div>
-                          <div class="col">
-                            <img src="./resources/realworld_exp/ops_msg_goal_image/goal_img_2.jpg"
-                              width="100%">
-                          </div>
-                          <div class="col">
-                            <img src="./resources/realworld_exp/ops_msg_goal_image/goal_img_3.jpg"
-                              width="100%">
-                          </div>
-                        </div>
-                      </td>
-                      <p></p>
-                      <td>
-                        <div class="row">
-                          <div class="col">
-                            <video autoplay muted loop playsinline controls
-                              src="./resources/realworld_exp/vnav_real_ops_msg_seq0_x8.mp4"
-                              width="100%" style="border-radius:10px; "></video>
-                          </div>
-                          <div class="col">
-                            <video autoplay muted loop playsinline controls
-                              src="./resources/realworld_exp/vnav_real_ops_msg_seq0_2_x8.mp4"
-                              width="100%" style="border-radius:10px; "></video>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="row">
-                          <div class="col">
-                            <video autoplay muted loop playsinline controls
-                              src="./resources/realworld_exp/vnav_real_ops_msg_seq1_x8.mp4"
-                              width="100%" style="border-radius:10px; "></video>
-                          </div>
-                          <div class="col">
-                            <video autoplay muted loop playsinline controls
-                              src="./resources/realworld_exp/vnav_real_ops_msg_seq4_x8.mp4"
-                              width="100%" style="border-radius:10px; "></video>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="row">
-                          <div class="col">
-                            <video autoplay muted loop playsinline controls
-                              src="./resources/realworld_exp/vnav_real_ops_msg_seq5_x8.mp4"
-                              width="50%" style="border-radius:10px; "></video>
-                          </div>
-                        </div>
-                      </td>
-                    </div>
-                  </div>
-                </div>
-              </section>
-
-              <section class="section">
-                <div class="container">
-                  <div class="columns is-centered">
-                    <div class="column is-full-width">
-                      <h2 class="title is-2" style="text-align: center; padding-bottom: 0px;">
-                        Snippets
-                      </h2>
-                      <h4 style="text-align: center; padding-bottom: 10px;">
-                        Manual Intervention
-                      </h4>
-                      <td>
-                        <div class="row">
-                          <div class="col">
-                            <video autoplay muted loop playsinline controls
-                              src="./resources/manual_intervention/manual_intervention_0_x3.mp4"
-                              width="100%" style="border-radius:10px; "></video>
-                          </div>
-                          <div class="col">
-                            <video autoplay muted loop playsinline controls
-                              src="./resources/manual_intervention/manual_intervention_1_x3.mp4"
-                              width="100%" style="border-radius:10px; "></video>
-                          </div>
-                        </div>
-                      </td>
-                      <br></br>
-                      <h4 style="text-align: center; padding-bottom: 10px;">
-                        Obstacle Avoidance
-                      </h4>
-                      <td>
-                        <div class="row">
-                          <div class="col">
-                            <video autoplay muted loop playsinline controls
-                              src="./resources/obstacle/obstacle_avoidance_0_x1.mp4" width="100%"
-                              style="border-radius:10px; "></video>
-                          </div>
-                          <div class="col">
-                            <video autoplay muted loop playsinline controls
-                              src="./resources/obstacle/obstacle_avoidance_1_x1.mp4" width="100%"
-                              style="border-radius:10px; "></video>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col">
-                            <video autoplay muted loop playsinline controls
-                              src="./resources/obstacle/obstacle_avoidance_3_x1.mp4" width="50%"
-                              style="border-radius:10px; "></video>
-                          </div>
-                        </div>
-                      </td>
-                      <br></br>
-                      <h4 style="text-align: center; padding-bottom: 10px;">
-                        Failure: Collision Because the Camera Cannot Recover Depth of Short-Distance
-                        Obstacles
-                      </h4>
-                      <td>
-                        <div class="row">
-                          <div class="col">
-                            <video autoplay muted loop playsinline controls
-                              src="./resources/others/eggs.mp4" width="66%"
-                              style="border-radius:10px; "></video>
-                          </div>
-                        </div>
-                      </td>
-                    </div>
-                  </div>
-                </div>
-              </section> -->
-
-              <section class="section" id="BibTeX">
-                <div class="container content">
-                  <div align="left" ;>
-
-                    <h2 class="titile">BibTeX</h2>
-                    <pre><code>
-      @article{jiao2025opennavmap,
-        title   = {{OpenNavMap}: Structure-Free Topometric Mapping via Large-Scale Collaborative Localization},
-        author  = {Jianhao Jiao and Changkun Liu and Jingwen Yu and Boyi Liu and Qianyi Zhang and Yue Wang and Dimitrios Kanoulas},
-        journal = {Under Review},
-        year    = {2025},
-        note    = {arXiv preprint arXiv:2601.12291},
-        url     = {https://rpl-cs-ucl.github.io/OpenNavMap_page},
-      }
+<div class="notes-overlay" id="notes-overlay" hidden></div>
+<div class="speaker-bar" id="speaker-bar" hidden>
+  <div><span class="sb-k">total</span> <span id="sb-total">00:00</span></div>
+  <div><span class="sb-k">this panel</span> <span id="sb-panel">00:00</span> / <span id="sb-target">00:00</span></div>
+  <div><span class="sb-k">step</span> <span id="sb-step">1 / 1</span></div>
+  <div class="sb-next"><span class="sb-k">next</span> <span id="sb-next"></span></div>
 </div>
-</code></pre>
-                  </div>
-              </section>
 
+<script src="js/chapters.js"></script>
+<script src="js/site.js"></script>
+<script src="js/r4_talk.js"></script>
+<script src="js/r4_merge.js"></script>
+<script src="js/r4_content.js"></script>
 </body>
-
 </html>

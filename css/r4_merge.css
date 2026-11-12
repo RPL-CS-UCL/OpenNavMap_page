@@ -1,0 +1,47 @@
+/* P05 three-phase merge view + Orders panel (p05b). Loaded after site.css. */
+
+/* p05: process overlay (right column) vs result cards */
+.stage-inner:not(.p05-proc) .p05-procui { visibility: hidden; }
+.stage-inner.p05-proc .p05-cards { visibility: hidden; }
+.p05-chips { display: flex; flex-direction: column; gap: 8px; }
+.p05-chips > * { position: static; }
+.p05-chip { display: flex; align-items: center; gap: 14px; height: 44px; padding: 0 18px; border: 2px solid var(--rule); border-radius: 999px;
+  background: var(--surface); color: var(--muted-fg); font: 500 24px/1 var(--f-text); white-space: nowrap; transition: background .2s, color .2s; }
+.p05-chip > span { font: 600 24px/1 var(--f-mono); }
+.p05-chip > b { font-weight: inherit; }
+.p05-chip.done { border-color: var(--accent); color: var(--accent-ink); }
+.p05-chip.on { background: var(--accent-ink); border-color: var(--accent-ink); color: var(--surface); }
+.p05-ncorr { font: 500 28px/1 var(--f-mono); color: var(--accent-ink); white-space: nowrap; }
+.p05-inset { box-sizing: border-box; border: 2px dashed var(--rule); border-radius: var(--radius); background: rgba(255, 255, 255, .35); pointer-events: none; }
+.p05-inset > span { position: absolute; left: 16px; top: 12px; font: 500 24px/1 var(--f-mono); letter-spacing: .06em; color: var(--muted-fg); }
+.p05-pair { display: flex; gap: 10px; }
+.p05-pair > * { position: relative; }
+.p05-pair.off { visibility: hidden !important; }
+.p05-pair figure { margin: 0; width: 205px; }
+.p05-pair img { width: 205px; height: 115px; object-fit: cover; border-radius: 6px; outline: 3px solid var(--accent); outline-offset: -3px; background: var(--panel); }
+.p05-pair figcaption { position: absolute; left: 8px; top: 8px; padding: 4px 10px; border-radius: 999px; background: var(--surface);
+  font: 500 24px/1 var(--f-mono); color: var(--accent-ink); }
+.p05-ctl { flex-wrap: wrap; align-items: center; }
+.p05-ctl input[type="range"] { flex: 1 1 200px; min-width: 0; accent-color: var(--accent-ink); }
+.p05-readout { font: 500 14px/1 var(--f-mono); color: var(--muted-fg); white-space: nowrap; }
+
+/* Orders panel */
+#p05b { --ct: 150; --cb: 0; }
+.ord-cell { box-sizing: border-box; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); }
+.ord-cell.hl { border: 3px solid var(--accent); }
+.ord-lab { position: absolute; left: 14px; top: 10px; font: 500 24px/1.15 var(--f-mono); color: var(--fg); white-space: nowrap; }
+.ord-lab b { color: var(--accent-ink); font-weight: 600; }
+.ord-err { position: absolute; right: 14px; top: 10px; font: 500 24px/1.15 var(--f-mono); color: var(--muted-fg); white-space: nowrap; }
+.ord-hl-note { position: absolute; left: 14px; bottom: 8px; font: 500 24px/1 var(--f-mono); color: var(--accent-ink); white-space: nowrap; }
+.ord-side { font: 500 28px/1.3 var(--f-text); color: var(--text); }
+.ord-side .ord-step { font: 500 40px/1.1 var(--f-mono); color: var(--fg); }
+.ord-ramp { height: 18px; border-radius: 4px; }
+.ord-ramp-lab { display: flex; justify-content: space-between; font: 400 24px/1 var(--f-mono); color: var(--muted-fg); margin-top: 8px; }
+.ord-ctl { flex-wrap: wrap; align-items: center; }
+.ord-ctl input[type="range"] { flex: 1 1 200px; min-width: 0; accent-color: var(--accent-ink); }
+/* present: source line bottom-right, clear of the photo-strip caption at bottom-left */
+html[data-mode="present"] #p05.is-current > .panel-src { justify-content: flex-end; }
+#p05b .ord-cell { z-index: 0; }
+#p05b-canvas { z-index: 1; pointer-events: none; }
+.ord-hl-key { display: flex; align-items: center; gap: 14px; color: var(--accent-ink); }
+.ord-hl-key i { flex: none; width: 44px; height: 28px; border: 3px solid var(--accent); border-radius: 6px; }

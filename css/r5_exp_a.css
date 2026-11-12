@@ -1,0 +1,20 @@
+/* Round 5, experiment panels A: topological localization (#p04b) and metric localization (#p04c). Loaded after r4_content.css. */
+#p04b, #p04b2, #p04c { --ct: 150; --cb: 130; }
+#p04b { --cb: 90; }
+#p04b2 { --cb: 50; }
+.r5a-legend { display: flex; gap: 32px; align-items: center; font: 500 24px/1 var(--f-text); color: var(--fg); white-space: nowrap; }
+.r5a-legend > * { position: static; display: flex; align-items: center; gap: 10px; }
+.r5a-legend i { display: inline-block; width: 28px; height: 20px; border-radius: 3px; }
+.r5a-legend .ours { color: var(--accent-ink); font-weight: 700; }
+.r5a-c0 { background: var(--muted-fg); opacity: .35; }
+.r5a-c1 { background: var(--muted-fg); opacity: .7; }
+.r5a-c2 { background: var(--accent); }
+.r5a-bar { border-radius: 2px 2px 0 0; }
+.r5a-ax { font: 600 26px/1.2 var(--f-text); color: var(--fg); white-space: nowrap; }
+.r5a-base { height: 2px; background: var(--rule); }
+.r5a-chart .bar-val { font: 500 24px/1.2 var(--f-mono); color: var(--muted-fg); text-align: center; }
+.r5a-chart .bar-val.ours { color: var(--accent-ink); font-weight: 700; }
+.r5a-chart .xtick { width: 200px; }
+.r5a-stats { width: 840px; justify-content: space-between; }
+.r5a-stats b { font-size: 56px; }
+.r5a-stats div > span { font-size: 26px; white-space: nowrap; }

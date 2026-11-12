@@ -1,0 +1,13 @@
+/* p05c: map merging on R0 (Vineyard) and R1 (HKUST campus) */
+.r5b-head { position: absolute; display: flex; align-items: baseline; gap: 16px; white-space: nowrap; font: 500 24px/1.2 var(--f-mono); color: var(--muted-fg); }
+.r5b-head b { font: 700 32px/1.2 var(--f-text); color: var(--fg); }
+.r5b-fig { position: absolute; background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius); padding: 12px; box-sizing: border-box; }
+.r5b-fig img { display: block; width: 100%; height: auto; }
+.r5b-ate { position: absolute; box-sizing: border-box; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--surface); padding: 16px 0; }
+.r5b-ate-k { font: 500 24px/1.2 var(--f-mono); color: var(--muted-fg); padding: 0 24px 12px; border-bottom: 1px solid var(--rule); }
+.r5b-cells { display: grid; grid-template-columns: repeat(3, 1fr); }
+.r5b-cells > div { display: grid; gap: 6px; padding: 14px 24px 0; }
+.r5b-cells > div + div { border-left: 1px solid var(--rule); }
+.r5b-cells > div > span { font: 500 24px/1.2 var(--f-mono); color: var(--muted-fg); white-space: nowrap; }
+.r5b-cells b { font: 700 48px/1.05 var(--f-text); color: var(--accent-ink); white-space: nowrap; }
+.r5b-cells i { font: 400 32px/1.1 var(--f-text); font-style: normal; color: var(--fg); white-space: nowrap; }

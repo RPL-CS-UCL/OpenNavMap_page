@@ -1,0 +1,61 @@
+/* Scroll page, chapter view (js/chapters.js; html[data-view="chapters"]). One panel per chapter at a time on screens
+   700 px and wider; phones and print show every panel under the chapter headings. Nothing here may give .chap a transform,
+   filter or contain: presenting puts the current panel in position: fixed, which those would break. */
+/* margin, not padding: a jump to the chapter lands its rule just under the sticky nav */
+.chap { margin-top: 96px; scroll-margin-top: 64px; }
+.chap-head, .chap-foot { max-width: var(--media-col); margin: 0 auto; padding: 0 16px; box-sizing: content-box; }
+.chap-num { font: 500 13px/1 var(--f-mono); letter-spacing: .03em; color: var(--accent-ink);
+  padding-top: 20px; border-top: 1px solid var(--rule); }
+.chap-title { color: var(--fg); font: 600 clamp(30px, 3vw, 40px)/1.15 var(--f-text); letter-spacing: -.02em; margin: 12px 0 8px; }
+.chap-take { color: var(--muted-fg); font-size: 18px; max-width: var(--text-col); margin: 0 0 20px; }
+
+/* tabs: quiet text with an underline on the open page */
+.chap-tabs { display: flex; flex-wrap: wrap; gap: 0 24px; border-bottom: 1px solid var(--border); }
+.chap-tabs[hidden] { display: none; }
+.chap-tab { font: 400 15px/1.2 var(--f-text); color: var(--muted-fg); background: none; border: 0; border-bottom: 2px solid transparent;
+  margin-bottom: -1px; padding: 12px 0 10px; cursor: pointer; white-space: nowrap; }
+.chap-tab:hover { color: var(--fg); }
+.chap-tab[aria-selected="true"] { color: var(--fg); border-bottom-color: var(--accent); }
+.chap-tab:focus-visible, .chap-step:focus-visible, .view-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.chap-body { overflow-anchor: none; }
+.chap .panel { padding-top: 32px; }
+
+.chap-foot { display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin-top: 20px; }
+.chap-pos { font: 400 13px/1 var(--f-mono); color: var(--muted-fg); margin-right: 8px; }
+.chap-step { height: 32px; padding: 0 12px; border: 1px solid var(--rule); border-radius: 8px; background: var(--surface);
+  color: var(--fg); font: 500 14px/1 var(--f-text); cursor: pointer; }
+.chap-step:hover:not(:disabled) { border-color: var(--gray-2); }
+.chap-step:disabled { color: var(--muted-fg); background: transparent; cursor: default; }
+
+/* view switch at the right end of the sticky nav */
+.view-toggle { margin-left: auto; flex: none; background: none; border: 0; padding: 4px 0; cursor: pointer;
+  font: 400 13px/1 var(--f-text); color: var(--muted-fg); text-decoration: underline; text-underline-offset: 3px; }
+.view-toggle:hover { color: var(--fg); }
+
+@media screen and (min-width: 700px) {
+  html[data-mode="scroll"] .chap .panel.tab-off { display: none; }
+}
+@media (max-width: 699.98px) {
+  .chap { margin-top: 64px; }
+  .chap .panel { padding-top: 40px; }
+  .chap-foot, .view-toggle { display: none; }
+}
+@media print {
+  .chap-tabs, .chap-foot, .view-toggle { display: none; }
+}
+/* presenting, speaker, capture: the chapter boxes vanish and the panels behave as before */
+html:not([data-mode="scroll"]) :is(.chap, .chap-body) { display: contents; }
+html:not([data-mode="scroll"]) :is(.chap-head, .chap-foot) { display: none; }
+
+/* round 8: "2.1" style number in front of each tab; footer credits folded */
+.chap-tab-num { font: 500 12px/1 var(--f-mono); color: inherit; margin-right: 7px; font-variant-numeric: tabular-nums; }
+.site-footer details.credits { display: block; }
+.site-footer details.credits > summary { cursor: pointer; text-decoration: underline dotted; text-underline-offset: 3px; }
+.site-footer details.credits > span { display: block; margin-top: 4px; }
+
+/* round 10: result chapters (.stacked) show every panel in one scroll */
+.chap.stacked .chap-foot { display: none; }
+.chap.stacked .chap-take { padding-bottom: 20px; border-bottom: 1px solid var(--border); margin-bottom: 0; }
+.chap.stacked .panel { scroll-margin-top: 64px; }
+.chap.stacked .panel + .panel { padding-top: 72px; }
