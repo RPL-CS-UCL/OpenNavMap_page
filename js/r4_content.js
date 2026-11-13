@@ -94,6 +94,20 @@
     if ("IntersectionObserver" in window) new IntersectionObserver((en) => { inView = en[0].isIntersecting; sync(); }, { threshold: 0.25 }).observe(p1);
     sync();
   }
+
+  // P05a: one looping clip, played while the panel is on screen; capture mode keeps the poster
+  const p5 = document.getElementById("p05a"), v5 = p5 && p5.querySelector("video");
+  if (v5) {
+    let inView = false;
+    const sync = () => {
+      const mode = html.dataset.mode, reduced = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const on = !reduced && (mode === "scroll" ? inView : (mode === "present" || mode === "speaker") && p5.classList.contains("is-current"));
+      if (on) v5.play().catch(() => {}); else v5.pause();
+    };
+    new MutationObserver(sync).observe(p5, { attributes: true, attributeFilter: ["class"] });
+    if ("IntersectionObserver" in window) new IntersectionObserver((en) => { inView = en[0].isIntersecting; sync(); }, { threshold: 0.25 }).observe(p5);
+    sync();
+  }
 })();
 
 // Download button at the bottom-right corner of every video (shown once the video is known to be loadable).

@@ -145,6 +145,11 @@
     "source": "Tab. V R2-InOrder: HLoc DISK+LG drops 21/23/26, HLoc SP+LG drops 23/30/36",
     "note": "baseline is the authors' own HLoc + COLMAP implementation"
   },
+  "dataset_sequences": {
+    "value": 35,
+    "unit": "sequences",
+    "source": "main text p10 V-A2a: \"35 sequences\""
+  },
   "dataset_months": {
     "value": 3.5,
     "unit": "months",

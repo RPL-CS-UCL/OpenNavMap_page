@@ -1,5 +1,5 @@
 /* Round 5, experiment panels A: topological localization (#p04b) and metric localization (#p04c). Loaded after r4_content.css. */
-#p04b, #p04b2, #p04c { --ct: 150; --cb: 130; }
+#p04b, #p04b2, #p04c, #p04d { --ct: 150; --cb: 130; }
 #p04b { --cb: 90; }
 #p04b2 { --cb: 50; }
 .r5a-legend { display: flex; gap: 32px; align-items: center; font: 500 24px/1 var(--f-text); color: var(--fg); white-space: nowrap; }

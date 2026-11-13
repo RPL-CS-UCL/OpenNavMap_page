@@ -26,6 +26,9 @@
   const INSET = [1404, 452, 1824, 712]; // own-frame inset (matches the .p05-inset box)
   const PAD = 0.04, MIN_VIEW_M = 60, BREAK_M = 30, OLD_ALPHA = 0.42;
   const SCALE_BAR_M = [20, 50, 100, 200], SCALE_BAR_PX = 130;
+  // submaps with no link to the main map yet are drawn in a tray in the lower-left corner of the map area
+  const TRAY = { x: BOX[0] + 6, y: BOX[1] + 30, w: 320, h: 130, pad: 10, gap: 24 }; // top-left corner of the map area (free in the final map)
+  const TRAY_LABEL = "not linked yet", TRAY_FONT = '500 15px "JetBrains Mono", monospace';
 
   function initP05() {
     const M = window.ONM_MERGE, P = window.ONM_PROC, cv = document.getElementById("p05-canvas");
@@ -42,12 +45,42 @@
     // node i of step k, metres
     const mx = (k, i) => xy[2 * (off[k] + i)] / q, my = (k, i) => xy[2 * (off[k] + i) + 1] / q;
 
+    // node flags per step: 1 = outside the main component (steps[].unl = half-open node ranges)
+    const flags = M.steps.map((s) => { const f = new Uint8Array(s.n); s.unl.forEach(([a, b]) => f.fill(1, a, b)); return f; });
+    const nUnlRuns = (k) => { let i = 0, c = 0; M.steps[k].runs.forEach(([, n]) => { c += flags[k][i]; i += n; }); return c; };
+    const trayBoxes = M.steps.map((s, k) => s.unl.map(([a, b]) => {
+      let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+      for (let i = a; i < b; i++) {
+        const x = mx(k, i), y = my(k, i);
+        if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y;
+      }
+      return { a, b, x0, y0, w: x1 - x0, h: y1 - y0 };
+    }));
+    // tray layout of step k: components side by side, top aligned, each fitted to its share of the tray width
+    // (never drawn larger than the map scale)
+    function trayOf(k, sc) {
+      const bx = trayBoxes[k];
+      if (!bx.length) return null;
+      const share = (TRAY.w - (bx.length - 1) * TRAY.gap) / bx.length - 2 * TRAY.pad;
+      let cur = TRAY.x;
+      const comps = bx.map((c) => {
+        const ts = Math.min(sc, share / Math.max(c.w, 1), (TRAY.h - 2 * TRAY.pad) / Math.max(c.h, 1));
+        const bw = 2 * TRAY.pad + c.w * ts, bh = 2 * TRAY.pad + c.h * ts, o = { ...c, ts, bx: cur, by: TRAY.y, bw, bh };
+        cur += bw + TRAY.gap;
+        return o;
+      });
+      return { comps };
+    }
+    const trayX = (c, x) => c.bx + TRAY.pad + c.ts * (x - c.x0), trayY = (c, y) => c.by + c.bh - TRAY.pad - c.ts * (y - c.y0);
+    const trayComp = (tr, i) => tr.comps.find((c) => i >= c.a && i < c.b);
+
     // camera per step: fits everything merged so far, never zooms back in
     const bw = BOX[2] - BOX[0], bh = BOX[3] - BOX[1], bcx = (BOX[0] + BOX[2]) / 2, bcy = (BOX[1] + BOX[3]) / 2;
     const cams = (() => {
       let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity, sc = Infinity;
       return M.steps.map((s, k) => {
         for (let i = 0; i < s.n; i++) {
+          if (flags[k][i]) continue;
           const x = mx(k, i), y = my(k, i);
           if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y;
         }
@@ -134,14 +167,14 @@
       const none = p && p.n_corr === 0 && p.n_loops === 0;
       chip2.textContent = none && ph >= 1 ? "No loop edge yet" : "Visual localization";
       let txt = "";
-      if (p && result) txt = p.pair ? "step " + pad2(k + 1) + " · " + p.n_corr + " correspondences" : "";
+      const nu = nUnlRuns(k), more = nu ? " · " + nu + " submap" + (nu > 1 ? "s" : "") + " not linked yet" : "";
+      if (p && result) txt = p.pair ? "step " + pad2(k + 1) + " · " + p.n_corr + (p.n_corr === 1 ? " correspondence" : " correspondences") + more : "";
       else if (p && ph >= 1) {
         if (none) txt = "disconnected submap";
         else if (p.n_corr === 0) txt = p.n_loops + " loop edge · node culled later";
-        else txt = p.n_corr + " correspondences";
-        if (ph >= 2 && prev && prev.comp > 1 && s.comp < prev.comp) txt += " · islands rejoin";
+        else txt = p.n_corr + (p.n_corr === 1 ? " correspondence" : " correspondences") + (ph >= 2 ? more : "");
       } else if (!p) txt = "initial submap";
-      ncorr.textContent = txt;
+      ncorr.textContent = txt; ncorr.classList.toggle("long", txt.length > 32);
       const showPair = !!(p && p.pair && (ph >= 1 || result));
       pair.classList.toggle("off", !showPair);
       if (showPair && pairNew.dataset.k !== String(k)) {
@@ -166,16 +199,21 @@
       ctx.lineJoin = "round"; ctx.lineCap = "round";
       // nodes already in the map: step k-1 -> step k positions
       const n0 = g ? g.n0 : s.n, runs = g ? prev.runs : s.runs;
-      const blk = g && e3 < 0.95 ? prev.blk : s.blk;
+      const fb = flags[k], fa = g ? flags[k - 1] : fb, flr = g && e3 < 0.95 ? fa : fb;
+      const trB = trayOf(k, cam.sc), trA = g ? trayOf(k - 1, cam.sc) : trB;
       const pts = new Float32Array(2 * s.n);
-      for (let i = 0; i < n0; i++) {
-        const x0 = g ? mx(k - 1, i) : mx(k, i), y0 = g ? my(k - 1, i) : my(k, i);
-        pts[2 * i] = PX(lerp(x0, mx(k, i), e3)); pts[2 * i + 1] = PY(lerp(y0, my(k, i), e3));
+      for (let i = 0; i < n0; i++) { // old nodes: screen position at step k-1 -> step k (main map or tray)
+        let ax, ay, bx, by;
+        if (fa[i]) { const c = trayComp(trA, i); ax = trayX(c, mx(k - 1, i)); ay = trayY(c, my(k - 1, i)); }
+        else { ax = PX(g ? mx(k - 1, i) : mx(k, i)); ay = PY(g ? my(k - 1, i) : my(k, i)); }
+        if (fb[i]) { const c = trayComp(trB, i); bx = trayX(c, mx(k, i)); by = trayY(c, my(k, i)); }
+        else { bx = PX(mx(k, i)); by = PY(my(k, i)); }
+        pts[2 * i] = lerp(ax, bx, e3); pts[2 * i + 1] = lerp(ay, by, e3);
       }
       const grey = new Path2D(), blue = new Path2D();
       let i0 = 0;
       runs.forEach(([, c], r) => {
-        const path = blk[r] !== blk[0] ? blue : grey; // grey = the part that holds the first piece
+        const path = flr[i0] ? blue : grey; // blue = not linked to the main map yet (drawn in the tray)
         for (let i = i0; i < i0 + c; i++) {
           const x = pts[2 * i], y = pts[2 * i + 1];
           if (i === i0) { path.moveTo(x, y); continue; }
@@ -187,11 +225,15 @@
       ctx.globalAlpha = OLD_ALPHA; ctx.strokeStyle = C.text; ctx.lineWidth = 2.5; ctx.stroke(grey);
       ctx.globalAlpha = 0.8; ctx.strokeStyle = C.island; ctx.lineWidth = 3; ctx.stroke(blue);
       ctx.globalAlpha = 1;
+      const trShow = e3 < 0.5 ? trA : trB;
+      if (trShow) drawTray(trShow);
       if (!g) { ctx.restore(); drawStripLeaders(k, pts, s.n - (k > 0 ? M.steps[k - 1].n : 0), k > 0 ? M.steps[k - 1].n : 0); return; }
       // the new piece: own frame (inset) -> map
       const th = g.th * e3, c = Math.cos(th), sn = Math.sin(th);
-      const cX = lerp(g.icx, PX(g.cmx), e3), cY = lerp(g.icy, PY(g.cmy), e3);
-      const sc = g.sIn * Math.pow(cam.sc / g.sIn, e3);
+      const newBlk = !!fb[g.n0], tc = newBlk ? trayComp(trB, g.n0) : null; // new piece not linked: it ends in the tray
+      const tX = (x) => (tc ? trayX(tc, x) : PX(x)), tY = (y) => (tc ? trayY(tc, y) : PY(y));
+      const cX = lerp(g.icx, tX(g.cmx), e3), cY = lerp(g.icy, tY(g.cmy), e3);
+      const sc = g.sIn * Math.pow((tc ? tc.ts : cam.sc) / g.sIn, e3);
       const np = new Float32Array(2 * g.n);
       for (let i = 0; i < g.n; i++) {
         const ox = g.o[2 * i], oy = g.o[2 * i + 1];
@@ -199,7 +241,6 @@
         np[2 * i] = cX + sc * vx; np[2 * i + 1] = cY - sc * vy;
         pts[2 * (g.n0 + i)] = np[2 * i]; pts[2 * (g.n0 + i) + 1] = np[2 * i + 1];
       }
-      const newBlk = s.blk[s.runs.length - 1] !== s.blk[0];
       const done = ph === 2 && t >= 1;
       // own-frame copy stays in the inset once the piece starts moving onto the map
       if (e3 > 0) {
@@ -237,9 +278,20 @@
       ctx.globalAlpha = 1;
       ctx.restore();
       let err = 0; // for the checks: distance (px) of the drawn piece from its stored map position
-      for (let i = 0; i < g.n; i++) err = Math.max(err, Math.hypot(np[2 * i] - PX(mx(k, g.n0 + i)), np[2 * i + 1] - PY(my(k, g.n0 + i))));
+      for (let i = 0; i < g.n; i++) err = Math.max(err, Math.hypot(np[2 * i] - tX(mx(k, g.n0 + i)), np[2 * i + 1] - tY(my(k, g.n0 + i))));
       dbg = { k, ph, t, e3, lines: ph >= 1 ? p.corr.length / 2 : 0, err_px: +err.toFixed(2) };
-      drawStripLeaders(k, pts, g.n, g.n0, result || ph < 1 && !proc[k] || ph === 2 && t >= 0.9);
+      drawStripLeaders(k, pts, g.n, g.n0, !newBlk && (result || ph < 1 && !proc[k] || ph === 2 && t >= 0.9));
+    }
+
+    function drawTray(tr) {
+      ctx.save();
+      ctx.font = TRAY_FONT; ctx.textBaseline = "bottom"; ctx.textAlign = "left";
+      tr.comps.forEach((c) => {
+        ctx.globalAlpha = 0.5; ctx.fillStyle = C.surface; ctx.fillRect(c.bx, c.by, c.bw, c.bh);
+        ctx.globalAlpha = 0.9; ctx.strokeStyle = C.island; ctx.lineWidth = 2; ctx.setLineDash([7, 5]); ctx.strokeRect(c.bx, c.by, c.bw, c.bh);
+      });
+      ctx.setLineDash([]); ctx.fillStyle = C.muted; ctx.globalAlpha = 1; ctx.fillText(TRAY_LABEL, tr.comps[0].bx, TRAY.y - 5);
+      ctx.restore();
     }
 
     function drawStripLeaders(k, pts, n, n0, vis) {

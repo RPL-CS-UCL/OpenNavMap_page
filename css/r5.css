@@ -175,3 +175,23 @@ html[data-mode="present"] .page-num { --pw: min(100vw, calc(100vh * 16 / 9)); --
 #p05b .ord-key .k-link { border-top: 3px solid #E43527; }
 #p02 .bar-weights { background: #005F81; }
 #p02 .bar-wlab { margin-left: 16px; font-size: 24px; color: #005F81; white-space: nowrap; }
+#p04d .r5d-lines { margin: 0; padding: 0; list-style: none; display: flex; gap: 48px; }
+#p04d .r5d-lines > li { position: static; flex: 1 1 0; font: 500 26px/1.3 var(--f-text); color: var(--fg); }
+#p04d .r5d-lines b { font-weight: 700; color: var(--accent-ink); }
+/* p01b: device photo -> arrow -> clip per row, then one large "Map Merging" arrow to the map */
+#p01b .i1-dev { object-fit: contain; mix-blend-mode: multiply; }
+#p01b .i1-map { width: 912px; height: 555px; }
+.i1-merge { width: 200px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.i1-merge > * { position: static; }
+.i1-merge span { font: 600 28px/1.1 var(--f-text); color: var(--fg); white-space: nowrap; }
+
+#p03 .p03-gfm { font: 400 22px/1.2 var(--f-text); color: var(--muted-fg); white-space: nowrap; }
+#p03 .p03-loop { color: var(--accent-ink); font-size: 22px; }
+
+.p05a-row { display: flex; justify-content: center; gap: 120px; }
+.p05a-stat { font: 400 28px/1 var(--f-text); color: var(--muted-fg); white-space: nowrap; display: flex; align-items: baseline; gap: 14px; }
+.p05a-stat b { font: 600 56px/1 var(--f-mono); color: var(--accent-ink); letter-spacing: -.03em; }
+
+#p05 .p05-ncorr.long { white-space: normal; font-size: 20px; line-height: 1.15; align-items: flex-start; }
+#p05 .p05-ncorr.long::before { flex: none; margin-top: 10px; }
+#p05 .stage-inner:not(.p05-proc) .p05-ncorr.long { top: 652px !important; font-size: 20px; }

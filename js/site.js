@@ -265,6 +265,8 @@ const P05_SLOW_STEPS = 5, P05_SLOW_MS = 1800, P05_FAST_MS = 220;
     });
     const [a, b] = M.match;
     g("p03-match").setAttribute("d", `M${a[0]} ${a[1]} L${b[0]} ${b[1]}`);
+    const ll = g("p03-loop-lab");
+    ll.style.left = (Math.max(a[0], b[0]) + 22) + "px"; ll.style.top = ((a[1] + b[1]) / 2 - 11) + "px";
     const bx = cx + 14, by = cy + 34;  // scale bar in the window's empty top-left corner
     g("p03-bar").setAttribute("d", `M${bx} ${by - 8} V${by} H${bx + M.bar.px} V${by - 8}`);
     const lab = g("p03-bar-lab");
@@ -437,7 +439,9 @@ const P05_SLOW_STEPS = 5, P05_SLOW_MS = 1800, P05_FAST_MS = 220;
     const off = [], loff = [];
     let a = 0, b = 0;
     M.steps.forEach((s) => { off.push(a); loff.push(b); a += s.n; b += s.nl; });
-    return { M, xy, ln, off, loff, last: M.steps.length - 1 };
+    // steps[].unl = node ranges outside the main component: no known place on the map, so these views skip them
+    const unl = (k, i) => M.steps[k].unl.some(([a, c]) => i >= a && i < c);
+    return { M, xy, ln, off, loff, unl, last: M.steps.length - 1 };
   })();
 
   const ease = (t) => 1 - Math.pow(1 - t, 3);
@@ -456,6 +460,7 @@ const P05_SLOW_STEPS = 5, P05_SLOW_MS = 1800, P05_FAST_MS = 220;
     let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity, sc = Infinity;
     return M.steps.map((s, k) => {
       for (let i = off[k]; i < off[k] + s.n; i++) {
+        if (MERGE.unl(k, i - off[k])) continue;
         const x = xy[2 * i] / q, y = xy[2 * i + 1] / q;
         if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y;
       }
@@ -487,7 +492,7 @@ const P05_SLOW_STEPS = 5, P05_SLOW_MS = 1800, P05_FAST_MS = 220;
       pins.forEach((p) => {
         const on = k >= p.from;
         if (p.el.hidden === on) p.el.hidden = !on;
-        if (!on) return;
+        if (!on || MERGE.unl(k, p.node)) { if (!p.el.hidden) p.el.hidden = true; return; }
         const nx = X(base + p.node), ny = Y(base + p.node);
         const ax = Math.min(Math.max(nx, p.x), p.x + p.w), ay = Math.min(Math.max(ny, p.y), p.y + p.h);
         ctx.beginPath(); ctx.moveTo(ax, ay); ctx.lineTo(nx, ny);
@@ -545,17 +550,12 @@ const P05_SLOW_STEPS = 5, P05_SLOW_MS = 1800, P05_FAST_MS = 220;
       ctx.save();
       ctx.lineJoin = "round"; ctx.lineCap = "round";
       let i = base, newStart = -1, newCount = 0;
-      const islands = [];
       ctx.beginPath();
       s.runs.forEach(([w, c], r) => {
-        if (w === s.piece) { newStart = i; newCount = c; } else if (s.blk[r]) islands.push([i, c]); else trace(i, c);
+        if (MERGE.unl(k, i - base)) { /* not linked yet: no place on the map, not drawn here */ } else if (w === s.piece) { newStart = i; newCount = c; } else trace(i, c);
         i += c;
       });
       ctx.strokeStyle = C.text; ctx.lineWidth = 2.5; ctx.globalAlpha = OLD_ALPHA;
-      ctx.stroke();
-      // pieces not (yet) linked to the largest block: separate islands
-      ctx.beginPath(); islands.forEach(([a, c]) => trace(a, c));
-      ctx.strokeStyle = C.island; ctx.lineWidth = 3; ctx.globalAlpha = 0.8;
       ctx.stroke();
       ctx.globalAlpha = 1;
       let end = null;

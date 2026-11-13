@@ -165,6 +165,12 @@ window.ONM_NUMBERS = {
   "note": "baseline is the authors' own HLoc + COLMAP implementation",
   "text": "21–36"
  },
+ "dataset_sequences": {
+  "value": 35,
+  "unit": "sequences",
+  "source": "main text p10 V-A2a: \"35 sequences\"",
+  "text": "35"
+ },
  "dataset_months": {
   "value": 3.5,
   "unit": "months",
