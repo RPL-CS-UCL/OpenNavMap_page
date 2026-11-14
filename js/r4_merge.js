@@ -174,7 +174,7 @@
         else if (p.n_corr === 0) txt = p.n_loops + " loop edge · node culled later";
         else txt = p.n_corr + (p.n_corr === 1 ? " correspondence" : " correspondences") + (ph >= 2 ? more : "");
       } else if (!p) txt = "initial submap";
-      ncorr.textContent = txt; ncorr.classList.toggle("long", txt.length > 32);
+      ncorr.textContent = txt; ncorr.classList.toggle("long", txt.length > 22);
       const showPair = !!(p && p.pair && (ph >= 1 || result));
       pair.classList.toggle("off", !showPair);
       if (showPair && pairNew.dataset.k !== String(k)) {

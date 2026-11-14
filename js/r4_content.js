@@ -138,3 +138,44 @@
     place();
   });
 })();
+
+// P04a: the same real nodes under each of the three edge layers (data/p04a_layers.js). Steps are pure CSS on data-step-now:
+// step 1 hides session B and the edges across sessions, step 2 shows everything.
+(() => {
+  const D = window.ONM_P04A, panel = document.getElementById("p04a");
+  if (!D || !panel) return;
+  const NS = "http://www.w3.org/2000/svg", W = 544, H = 490, PAD = 24;
+  const k = Math.min((W - 2 * PAD) / D.size[0], (H - 2 * PAD) / D.size[1]);
+  const ox = (W - k * D.size[0]) / 2, oy = (H - k * D.size[1]) / 2;
+  const px = D.nodes.map(([x, y]) => [ox + k * x, H - oy - k * y]);
+  const el = (tag, attrs, parent) => {
+    const e = document.createElementNS(NS, tag);
+    Object.entries(attrs).forEach(([a, v]) => e.setAttribute(a, v));
+    if (parent) parent.appendChild(e);
+    return e;
+  };
+  const path = (edges) => edges.map(([a, b]) => `M${px[a][0].toFixed(1)} ${px[a][1].toFixed(1)}L${px[b][0].toFixed(1)} ${px[b][1].toFixed(1)}`).join("");
+  panel.querySelectorAll(".p04a-col").forEach((col) => {
+    const svg = col.querySelector(".p04a-map"), E = D.edges[col.dataset.layer] || [];
+    const intra = (s) => E.filter(([a, , t]) => t === "intra" && D.nodes[a][2] === s);
+    const cross = E.filter((e) => e[2] === "inter");
+    el("path", { class: "p04a-intra", d: path(intra(1)) }, el("g", { class: "p04a-s1" }, svg));
+    el("path", { class: "p04a-intra", d: path(intra(0)) }, el("g", {}, svg));
+    const gx = el("g", { class: "p04a-cross" }, svg);
+    el("path", { class: "p04a-halo", d: path(cross) }, gx);
+    el("path", { class: "p04a-inter", d: path(cross) }, gx);
+    const tag = document.createElement("div");
+    tag.className = "p04a-cnt p04a-cross";
+    tag.dataset.narrow = "hide";
+    tag.style.cssText = "right:20px;top:502px";
+    tag.textContent = `+${cross.length} edges across sessions`;
+    col.appendChild(tag);
+    [1, 0].forEach((s) => {
+      const g = el("g", s ? { class: "p04a-s1" } : {}, svg);
+      D.nodes.forEach((n, i) => { if (n[2] === s) el("circle", { class: "p04a-n" + s, cx: px[i][0].toFixed(1), cy: px[i][1].toFixed(1), r: s ? 4 : 4.5 }, g); });
+    });
+  });
+  // a capture without ?step shows the final step
+  const q = new URLSearchParams(location.search);
+  if (q.get("capture") === "p04a" && !q.get("step")) panel.dataset.stepNow = "2";
+})();

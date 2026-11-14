@@ -21,6 +21,7 @@
 <script src="data/p03_cloud.js"></script>
 <script src="data/p03_map.js"></script>
 <script src="data/hook_map.js"></script>
+<script src="data/p04a_layers.js"></script>
 <link rel="stylesheet" href="css/r5.css">
 <link rel="stylesheet" href="css/chapters.css">
 </head>
@@ -573,6 +574,63 @@
   </div>
   <div class="panel-src">Redrawn from paper Fig. 2</div>
   <aside class="panel-notes">This is the whole pipeline, as in the paper's Fig. 2. Anyone records the place with any camera. Each piece keeps its photos, linked three ways: same place seen, how it moved, where a robot may go. To join a new piece we find look-alike photos, let a geometric foundation model measure their offset, then re-balance the poses. That 3D is never stored. The map then drops redundant photos, and a robot navigates from a goal photo. Future work: the robot's own logs feed back in, a self-improving map collection.</aside>
+</section>
+
+<!-- P04a: three-layer shared-node submap, drawn from real nodes and edges (data/p04a_layers.js) -->
+<section class="panel" id="p04a" data-chapter="2" data-talk-seconds="45" data-toc="Three-layer map" data-max-step="2" data-step-labels="One session|After merging">
+  <div class="eyebrow"><span>04</span> / Three-layer map</div>
+  <h2 class="panel-title">Methodology: three-layer shared-node submap</h2>
+  <p class="panel-desc">One set of image nodes, three kinds of edges.</p>
+  <div class="stage" role="img" aria-label="Three drawings side by side of the same small area of a real merged map, seen from above: the same image nodes from two recording sessions in all three. Left, the covisibility graph links nodes that see the same points; middle, the odometry graph chains consecutive nodes; right, the traversability graph links nodes a robot can move between. Step one shows one session alone. Step two adds the other session and the edges that join the two, drawn thick. Under each drawing, three rows say how the layer is built, how it changes after each merge, and what it answers.">
+    <div class="stage-inner p04a">
+      <div class="p04a-col" data-layer="covis" style="left:96px;top:176px">
+        <div class="p04a-h c-covis" data-narrow="hide"><i class="p04a-sw"></i>Covisibility graph</div>
+        <svg class="p04a-map" width="544" height="490" viewBox="0 0 544 490" aria-hidden="true"></svg>
+        <dl class="p04a-rows" data-narrow="hide">
+          <dt>Build</dt><dd>Edges between co-visible images</dd>
+          <dt>Evolve</dt><dd>Spatial-neighbor edges added</dd>
+          <dt>Query</dt><dd>VPR and metric localization</dd>
+        </dl>
+      </div>
+      <div class="p04a-col" data-layer="odom" style="left:688px;top:176px">
+        <div class="p04a-h c-odom" data-narrow="hide"><i class="p04a-sw"></i>Odometry graph</div>
+        <svg class="p04a-map" width="544" height="490" viewBox="0 0 544 490" aria-hidden="true"></svg>
+        <dl class="p04a-rows" data-narrow="hide">
+          <dt>Build</dt><dd>Relative poses, consecutive nodes</dd>
+          <dt>Evolve</dt><dd>Inter-submap edges, then PGO</dd>
+          <dt>Query</dt><dd>Globally consistent poses</dd>
+        </dl>
+      </div>
+      <div class="p04a-col" data-layer="trav" style="left:1280px;top:176px">
+        <div class="p04a-h c-trav" data-narrow="hide"><i class="p04a-sw"></i>Traversability graph</div>
+        <svg class="p04a-map" width="544" height="490" viewBox="0 0 544 490" aria-hidden="true"></svg>
+        <dl class="p04a-rows" data-narrow="hide">
+          <dt>Build</dt><dd>Edges along the recorded path</dd>
+          <dt>Evolve</dt><dd>Cross-session shortcuts added</dd>
+          <dt>Query</dt><dd>Dijkstra path planning</dd>
+        </dl>
+      </div>
+      <div class="legend p04a-leg" data-narrow="hide" style="left:96px;top:916px">
+        <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7" fill="var(--gray-1)"/></svg>Session A
+        <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="6" fill="var(--surface)" stroke="var(--gray-1)" stroke-width="2.5"/></svg>Session B
+        <svg width="44" height="20" viewBox="0 0 44 20" aria-hidden="true"><path d="M2 10 H42" stroke="var(--muted-fg)" stroke-width="2" opacity=".6"/></svg>Edge within a session
+        <svg width="44" height="20" viewBox="0 0 44 20" aria-hidden="true"><path d="M4 10 H40" stroke="var(--muted-fg)" stroke-width="6" stroke-linecap="round"/></svg>Edge across sessions
+      </div>
+      <div class="p04a-step" data-narrow="hide" style="left:1124px;top:912px"><span class="s1">Step 1 of 2 · one session</span><span class="s2">Step 2 of 2 · after merging</span></div>
+      <div class="p04a-sum" data-narrow="hide" style="left:96px;top:980px"><b class="c-covis">Covisibility</b>: localization · <b class="c-odom">Odometry</b>: global consistency · <b class="c-trav">Traversability</b>: planning</div>
+    </div>
+  </div>
+  <p class="fig-cap">The three layers share the same nodes: the covisibility graph supports localization, the odometry graph maintains global consistency, and the traversability graph supports planning.</p>
+  <div class="narrow-copy">
+    <ul class="nc-rows">
+      <li><b class="c-covis">Covisibility graph (left)</b><span>Build: edges between co-visible images. Evolve: spatial-neighbor edges added. Query: VPR and metric localization.</span></li>
+      <li><b class="c-odom">Odometry graph (middle)</b><span>Build: relative poses, consecutive nodes. Evolve: inter-submap edges, then PGO. Query: globally consistent poses.</span></li>
+      <li><b class="c-trav">Traversability graph (right)</b><span>Build: edges along the recorded path. Evolve: cross-session shortcuts added. Query: Dijkstra path planning.</span></li>
+      <li><b>Sessions</b><span>Filled dots: session A. Open dots: session B. Thick lines: edges across sessions.</span></li>
+    </ul>
+  </div>
+  <div class="panel-src">Region R2 · reference merge run, final map · two of its sessions in a 47 m × 42 m area, placed by ground truth for display</div>
+  <aside class="panel-notes">Every node is one image, and all three layers use the same nodes. The covisibility graph links images that see the same points, and it is what we localize against. The odometry graph chains consecutive images by their relative poses, and after each merge it gains edges between sessions so that pose graph optimization keeps the map globally consistent. The traversability graph links places a robot can move between, gains shortcuts across sessions after merging, and is what the planner searches.</aside>
 </section>
 
 <!-- P04b: topological localization (paper Sec. V-B1, Tab. II) -->
@@ -1184,6 +1242,7 @@
     <details class="credits" aria-label="Credits"><summary>Image and video credits</summary>
       <span>Simulation navigation clips from the LiteVLoc project page (<a href="https://rpl-cs-ucl.github.io/LiteVLoc/" target="_blank" rel="noopener">rpl-cs-ucl.github.io/LiteVLoc</a>), same authors.</span>
       <span>Figure crops on the "Why" chart: Li et al., BEHAVIOR-1K, <a href="https://arxiv.org/abs/2403.09227" target="_blank" rel="noopener">arXiv:2403.09227</a>, Fig. 1, CC BY 4.0 · Yenamandra et al., HomeRobot, <a href="https://arxiv.org/abs/2306.11565" target="_blank" rel="noopener">arXiv:2306.11565</a>, Fig. 2, CC BY 4.0 · Chiang et al., Mobility VLA, <a href="https://arxiv.org/abs/2407.07775" target="_blank" rel="noopener">arXiv:2407.07775</a>, Fig. 2 (recomposed), CC BY 4.0 · Shah and Levine, ViKiNG, <a href="https://arxiv.org/abs/2202.11271" target="_blank" rel="noopener">arXiv:2202.11271</a>, Fig. 1, CC BY 4.0 · Zhang et al., CREStE, <a href="https://arxiv.org/abs/2503.03921" target="_blank" rel="noopener">arXiv:2503.03921</a>, Fig. 5, CC BY-SA 4.0 · Staniaszek et al., AutoInspect, <a href="https://arxiv.org/abs/2404.12785" target="_blank" rel="noopener">arXiv:2404.12785</a>, Fig. 1, arXiv non-exclusive licence<!-- AutoInspect figure: arXiv non-exclusive licence only, not Creative Commons; permission to be confirmed by the authors before the page goes public. --> · landmark map: our baseline run, generated from its sparse 3D landmarks.</span>
+      <span>Music in the video: "Better Times are Coming" by Alejandro Magaña (A. M.), from <a href="https://mixkit.co/free-stock-music/" target="_blank" rel="noopener">Mixkit</a>, used under the Mixkit Stock Music Free License.</span>
     </details>
     <span class="keys">Talk mode: <kbd>P</kbd> start · <kbd>→</kbd> next · <kbd>←</kbd> back · <kbd>N</kbd> notes · <kbd>S</kbd> speaker window · <kbd>F</kbd> full screen · <kbd>Esc</kbd> leave</span>
   </div>

@@ -16,6 +16,32 @@
   const STACKED = new Set([3, 4]);
   const KEY = "onm-view";
   const html = document.documentElement;
+
+  // highlight the nav link of the section under the reading line (40% down the screen), recomputed from
+  // the scroll position on every scroll, so it cannot go stale; at the page end the last link wins
+  function spyNav(nav, links, targets) {
+    let cur = -1, queued = false;
+    const update = () => {
+      queued = false;
+      if (html.dataset.mode !== "scroll") return;
+      const line = Math.max(innerHeight * 0.4, 160);
+      let k = -1;
+      targets.forEach((t, i) => { const r = t.getBoundingClientRect(); if ((r.width || r.height) && r.top <= line) k = i; });
+      if (scrollY + innerHeight >= html.scrollHeight - 2) k = targets.length - 1;
+      if (k === cur) return;
+      cur = k;
+      links.forEach((a, i) => a.setAttribute("aria-current", String(i === k)));
+      if (k >= 0 && nav.scrollWidth > nav.clientWidth) nav.scrollTo({ left: links[k].offsetLeft - 16, behavior: "smooth" });
+    };
+    const ask = () => { if (!queued) { queued = true; requestAnimationFrame(update); } };
+    addEventListener("scroll", ask, { passive: true });
+    addEventListener("resize", ask);
+    new MutationObserver(ask).observe(html, { attributes: true, attributeFilter: ["data-mode"] });
+    if ("ResizeObserver" in window) new ResizeObserver(ask).observe(document.body);
+    ask();
+  }
+  window.ONM_SPY_NAV = spyNav;
+
   const params = new URLSearchParams(location.search);
   if (["capture", "speaker", "present"].some((k) => params.get(k))) return;
 
@@ -188,17 +214,7 @@
       a.appendChild(document.createTextNode(name));
       return a;
     });
-    if ("IntersectionObserver" in window) {
-      const io = new IntersectionObserver((en) => en.forEach((e) => {
-        if (!e.isIntersecting) return;
-        links.forEach((a) => {
-          const on = a.hash === "#" + e.target.id;
-          a.setAttribute("aria-current", String(on));
-          if (on && nav.scrollWidth > nav.clientWidth) nav.scrollTo({ left: a.offsetLeft - 16, behavior: "smooth" });
-        });
-      }), { rootMargin: "-40% 0px -55% 0px" });
-      items.forEach(([sec]) => io.observe(sec));
-    }
+    if (window.ONM_SPY_NAV) window.ONM_SPY_NAV(nav, links, items.map(([sec]) => sec));
   }
 
   // test hook for headless checks: show the tab holding #id, without scrolling or animation

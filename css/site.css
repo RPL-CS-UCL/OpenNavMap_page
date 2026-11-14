@@ -13,7 +13,7 @@
   /* light theme after the NVIDIA GR00T page; the accent stays the paper's own green */
   --bg: #f9f7f2; --stage: #f9f7f2; --surface: #ffffff; --panel: #f3f0e8; --border: #e6e2d8; --rule: #d1d5db;
   --fg: #222222; --text: #3a3a3a; --muted-fg: #6b7280; --dim: #9ca3af; --gray-1: #5c5c5c; --gray-2: #a6a6a6;
-  --accent: #009853; --accent-ink: #00703d; --accent-tint: rgba(0, 152, 83, .12); --island: #3b6fb0;
+  --accent: #009853; --accent-ink: #00703d; --accent-tint: rgba(0, 152, 83, .12); --island: #3b6fb0; --odom: #8c0378;
   --radius: 12px; --shadow: 0 4px 24px rgba(0, 0, 0, .12);
   /* media column: as wide as the viewport height allows, so a stage plus its title fits one screen (1440x900: ~1220 px; 1920x1080: 1580 px) */
   --text-col: 800px; --media-col: clamp(720px, calc((100svh - 290px) * 2), 1600px); --hdr: 64px;
@@ -296,9 +296,9 @@ html[data-mode="scroll"] .panel:not(.cover) > .stage > .stage-inner { transform:
 .p04-blk img { object-fit: cover; border-radius: 4px; flex: none; }
 .p04-layers { display: grid; gap: 30px; margin-top: 20px; }
 .p04-layer span { display: block; font-size: 24px; line-height: 1.2; margin-top: 4px; }
-.c-covis { color: var(--accent-ink); }
-.c-odom { color: var(--fg); }
-.c-trav { color: var(--island); }
+.c-covis { color: var(--island); }
+.c-odom { color: var(--odom); }
+.c-trav { color: var(--accent-ink); }
 .p04-join { gap: 16px; }
 .p04-sub { display: flex; flex-direction: column; }
 .p04-pair { display: flex; gap: 8px; }

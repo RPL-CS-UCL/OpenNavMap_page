@@ -284,9 +284,9 @@ const P05_SLOW_STEPS = 5, P05_SLOW_MS = 1800, P05_FAST_MS = 220;
     const covis = document.getElementById("p04-l-covis"), odom = document.getElementById("p04-l-odom"), trav = document.getElementById("p04-l-trav");
     if (!covis) return;
     // same five photos in each layer, three different edge sets
-    [[0, 1], [0, 2], [1, 3], [2, 3], [2, 4], [3, 4]].forEach(([i, j]) => arc(covis, N[i], N[j], { stroke: C.green, "stroke-width": 3, "stroke-dasharray": "7 5" }));
-    chain.forEach(([i, j]) => seg(odom, N[i], N[j], { stroke: C.fg, "stroke-width": 3 }));
-    [...chain, [1, 3]].forEach(([i, j]) => seg(trav, N[i], N[j], { stroke: C.island, "stroke-width": 12, "stroke-linecap": "round", opacity: 0.45 }));
+    [[0, 1], [0, 2], [1, 3], [2, 3], [2, 4], [3, 4]].forEach(([i, j]) => arc(covis, N[i], N[j], { stroke: C.island, "stroke-width": 3, "stroke-dasharray": "7 5" }));
+    chain.forEach(([i, j]) => seg(odom, N[i], N[j], { stroke: "#8c0378", "stroke-width": 3 }));
+    [...chain, [1, 3]].forEach(([i, j]) => seg(trav, N[i], N[j], { stroke: C.green, "stroke-width": 12, "stroke-linecap": "round", opacity: 0.45 }));
     // nodes are image keyframes: draw each as a small camera frustum facing along the path
     const cams = (svg, pts) => pts.forEach(([cx, cy], i) => {
       const [nx, ny] = pts[Math.min(i + 1, pts.length - 1)], [px, py] = pts[Math.max(i - 1, 0)];
@@ -697,17 +697,7 @@ const P05_SLOW_STEPS = 5, P05_SLOW_MS = 1800, P05_FAST_MS = 220;
       nav.appendChild(a);
       return a;
     });
-    if ("IntersectionObserver" in window) {
-      const io = new IntersectionObserver((entries) => entries.forEach((en) => {
-        if (!en.isIntersecting) return;
-        links.forEach((a) => {
-          const on = a.hash === "#" + en.target.id;
-          a.setAttribute("aria-current", String(on));
-          if (on && nav.scrollWidth > nav.clientWidth) nav.scrollTo({ left: a.offsetLeft - 16, behavior: "smooth" });
-        });
-      }), { rootMargin: "-40% 0px -55% 0px" });
-      items.forEach(([id]) => io.observe(document.getElementById(id)));
-    }
+    if (window.ONM_SPY_NAV) window.ONM_SPY_NAV(nav, links, items.map(([id]) => document.getElementById(id)));
   }
 
   function initBibCopy() {
